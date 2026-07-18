@@ -110,6 +110,21 @@ export function getToneDescription(tone: keyof typeof TONE_MAPPING): string {
   return TONE_MAPPING[tone]?.description || "Standart";
 }
 
+/**
+ * Müfredat/ders verisindeki Türkçe ton etiketini ("Bilge", "Öğretici" vb.)
+ * TONE_MAPPING anahtarına çevirir. Böylece dersin tonu, persona/ses sistemine
+ * bağlanabilir (renk, pace/pitch ipuçları vs.). Eşleşme yoksa "teaching".
+ */
+export function toneKeyFromLabel(label: string): keyof typeof TONE_MAPPING {
+  const match = (
+    Object.entries(TONE_MAPPING) as [
+      keyof typeof TONE_MAPPING,
+      { label: string }
+    ][]
+  ).find(([, v]) => v.label === label);
+  return match ? match[0] : "teaching";
+}
+
 export function getToneColor(tone: keyof typeof TONE_MAPPING): string {
   return TONE_MAPPING[tone]?.color || "#3B82F6";
 }

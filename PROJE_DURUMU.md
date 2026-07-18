@@ -145,7 +145,22 @@ DOĞRULANDI: Quiz çözüldü → sonuç tabloya yazıldı (1 record: seviye 7, 
 - [~] FAZA 4 (başladı): ElevenLabs SESİ eklendi (Doğa Hoca yorumunu seslendirir) ✅;
   HeyGen (avatar) hâlâ bekliyor
 - [ ] FAZA 4 (avatar): HeyGen — konuşan avatar
-- [ ] Müfredat içeriği (her seviye için dersler) — Gemini stratejisine bağlı
+- [~] Müfredat içeriği (Ustalık Piramidi): Level 0 ilk 5 ders entegre edildi ✅
+      (lib/lessons-data.ts + dashboard'da listeleniyor); kalan seviyeler bekliyor
+
+## MÜFREDAT — USTALIK PİRAMİDİ (başladı ✅)
+- `lib/lessons-data.ts`: `Lesson` tipi + `LEVEL_0_LESSONS` (Level 0 ilk 5 ders).
+  Her ders: id, title, content, `lifeConcept` (pedagojik), `tone`, `stability`,
+  `similarityBoost` (ElevenLabs tonlama parametreleri korunur).
+- `lib/ai/voice-api.ts`: `synthesizeSpeech(text, voiceSettings?)` — derse özel
+  stability/similarityBoost ElevenLabs'e iletiliyor.
+- `lib/ai/personality.ts`: `toneKeyFromLabel()` — dersin Türkçe ton etiketini
+  TONE_MAPPING'e bağlar (renk/pace-pitch metadata'sı kullanılabilir).
+- `components/lessons/LessonList.tsx`: dersleri "Başlat" ile açılıp okunabilir +
+  "Doğa Hoca'dan dinle" (ses) olarak listeler.
+- `app/dashboard/page.tsx`: "Level 0 — Satranç Okuryazarlığı" bölümü eklendi.
+- DOĞRULANDI: Chromium'da dashboard 5 dersi listeliyor, "Başlat" açıyor, dinle butonu var.
+- NOT: Müfredat statik kod verisi (quiz-data.ts gibi); istenirse Supabase'e taşınabilir.
 
 ## SES — ELEVENLABS (FAZA 4 başladı ✅)
 - `lib/ai/voice-api.ts`: `synthesizeSpeech(text)` server action — ElevenLabs TTS REST

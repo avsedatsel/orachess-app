@@ -15,7 +15,9 @@ const ELEVENLABS_VOICE_ID = "pNInz6obpgDQGcFmaJgB";
 const ELEVENLABS_MODEL = "eleven_multilingual_v2";
 
 export async function synthesizeSpeech(
-  text: string
+  text: string,
+  // Derse/tona özel tonlama (müfredat verisinden gelir). Verilmezse makul varsayılan.
+  voiceSettings?: { stability?: number; similarityBoost?: number }
 ): Promise<{ audio: string } | { error: string }> {
   try {
     if (!text || !text.trim()) {
@@ -42,7 +44,10 @@ export async function synthesizeSpeech(
         body: JSON.stringify({
           text,
           model_id: ELEVENLABS_MODEL,
-          voice_settings: { stability: 0.5, similarity_boost: 0.75 },
+          voice_settings: {
+            stability: voiceSettings?.stability ?? 0.5,
+            similarity_boost: voiceSettings?.similarityBoost ?? 0.75,
+          },
         }),
       }
     );
