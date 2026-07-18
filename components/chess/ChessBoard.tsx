@@ -62,6 +62,7 @@ export const ChessBoard: React.FC<ChessBoardProps> = ({ onMove }) => {
             return (
               <div
                 key={square}
+                data-square={square}
                 data-sq={isLight ? "light" : "dark"}
                 onClick={() => handleSquareClick(square)}
                 className="w-10 h-10 sm:w-14 sm:h-14 lg:w-16 lg:h-16 flex items-center justify-center cursor-pointer relative select-none"
