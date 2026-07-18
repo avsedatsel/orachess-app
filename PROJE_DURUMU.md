@@ -142,8 +142,21 @@ DOĞRULANDI: Quiz çözüldü → sonuç tabloya yazıldı (1 record: seviye 7, 
 - [x] Kullanıcının kendi quiz geçmişini gördüğü "ilerleme" sayfası (`/ilerleme`) ✅ (PR #2)
 - [x] Sağ üstteki giriş çubuğu / iç sayfa "← Ana Sayfa" çakışması düzeltildi ✅ (PR #2)
 - [x] Profesyonel satranç tahtası: Unicode harfler yerine SVG taşları (Wikimedia cburnett, CC BY-SA 3.0) ✅
-- [ ] FAZA 4: ElevenLabs (ses) + HeyGen (avatar) — canlı ders deneyimi
+- [~] FAZA 4 (başladı): ElevenLabs SESİ eklendi (Doğa Hoca yorumunu seslendirir) ✅;
+  HeyGen (avatar) hâlâ bekliyor
+- [ ] FAZA 4 (avatar): HeyGen — konuşan avatar
 - [ ] Müfredat içeriği (her seviye için dersler) — Gemini stratejisine bağlı
+
+## SES — ELEVENLABS (FAZA 4 başladı ✅)
+- `lib/ai/voice-api.ts`: `synthesizeSpeech(text)` server action — ElevenLabs TTS REST
+  (SDK yok, fetch ile). Model: `eleven_multilingual_v2` (Türkçe). Ses: premade "Adam"
+  (voice_id sabiti — değiştirilebilir). Anahtar yoksa çökmez, net hata döner.
+- `components/mentor/MentorEngine.tsx`: yorumun altında "🔊 Sesli dinle" butonu → Gemini'nin
+  ürettiği metni ElevenLabs ile seslendirip tarayıcıda çalar.
+- Akış: Gemini (beyin, metin) → ElevenLabs (ses). Beyin olmadan seslendirilecek metin olmaz.
+- Env: Vercel'de `ELEVENLABS_API_KEY` gerekir.
+- NOT (Gemini danışmanı): İstenirse ses (voice_id) değiştirilebilir; auto-play yerine
+  buton tercih edildi (tarayıcı otomatik-oynatma engellerinden kaçınmak için).
 
 ## SATRANÇ TAHTASI GÖRSEL İYİLEŞTİRME (TAMAMLANDI ✅)
 - Eski: Unicode harf-taşları (♟) — "acemi" görünüm.

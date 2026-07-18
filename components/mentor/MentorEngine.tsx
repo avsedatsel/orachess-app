@@ -2,8 +2,9 @@
 
 import React, { useState, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Lightbulb, Loader, AlertCircle } from "lucide-react";
+import { Lightbulb, Loader, AlertCircle, Volume2 } from "lucide-react";
 import { analyzeMoveWithMentor } from "@/lib/ai/mentor-api";
+import { synthesizeSpeech } from "@/lib/ai/voice-api";
 import {
   getToneColor,
   TONE_MAPPING,
@@ -34,12 +35,17 @@ export const MentorEngine: React.FC<MentorEngineProps> = ({
   const [response, setResponse] = useState<MentorResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // Sesli dinleme (ElevenLabs) durumu
+  const [sesDurumu, setSesDurumu] = useState<"bekliyor" | "yukleniyor" | "hata">(
+    "bekliyor"
+  );
 
   const fetchMentorResponse = useCallback(async () => {
     if (!isOpen || !move) return;
     setIsLoading(true);
     setError(null);
     setResponse(null);
+    setSesDurumu("bekliyor");
 
     try {
       const result = await analyzeMoveWithMentor({
@@ -69,6 +75,25 @@ export const MentorEngine: React.FC<MentorEngineProps> = ({
       fetchMentorResponse();
     }
   }, [move, isOpen, fetchMentorResponse]);
+
+  // Doğa Hoca'nın yorumunu ElevenLabs ile seslendir ve çal
+  const seslendir = useCallback(async () => {
+    if (!response) return;
+    setSesDurumu("yukleniyor");
+    try {
+      const r = await synthesizeSpeech(response.text);
+      if ("audio" in r) {
+        const audio = new Audio(r.audio);
+        await audio.play();
+        setSesDurumu("bekliyor");
+      } else {
+        console.error("Ses hatası:", r.error);
+        setSesDurumu("hata");
+      }
+    } catch {
+      setSesDurumu("hata");
+    }
+  }, [response]);
 
   if (!isOpen) return null;
 
@@ -131,6 +156,30 @@ export const MentorEngine: React.FC<MentorEngineProps> = ({
             <p className="text-sm leading-relaxed text-gray-100 mb-3">
               {response.text}
             </p>
+
+            {/* Sesli dinle (ElevenLabs) */}
+            <div className="flex items-center gap-2 mb-3">
+              <button
+                onClick={seslendir}
+                disabled={sesDurumu === "yukleniyor"}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-ora-gold border border-ora-gold/50 rounded-lg hover:bg-ora-gold/10 transition disabled:opacity-50"
+              >
+                {sesDurumu === "yukleniyor" ? (
+                  <>
+                    <Loader className="w-3.5 h-3.5 animate-spin" />
+                    Ses hazırlanıyor…
+                  </>
+                ) : (
+                  <>
+                    <Volume2 className="w-3.5 h-3.5" />
+                    Sesli dinle
+                  </>
+                )}
+              </button>
+              {sesDurumu === "hata" && (
+                <span className="text-xs text-error">Ses üretilemedi</span>
+              )}
+            </div>
 
             {response.hidden_concept && (
               <div className="inline-block px-2 py-1 bg-ora-accent/20 rounded text-xs text-ora-accent mb-2">
