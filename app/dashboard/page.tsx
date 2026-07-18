@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { LEVEL_DEFINITIONS } from "@/lib/chess-utils";
 import { LessonList } from "@/components/lessons/LessonList";
 
@@ -18,11 +17,8 @@ export default function DashboardPage({
   return (
     <main className="min-h-screen p-6 pt-20">
       <div className="max-w-5xl mx-auto">
-        <div className="flex items-center justify-between mb-8">
+        <div className="mb-8">
           <h1 className="text-3xl font-bold gradient-text">Kontrol Paneli</h1>
-          <Link href="/" className="text-ora-gold hover:underline text-sm">
-            ← Ana Sayfa
-          </Link>
         </div>
 
         {/* Sınavdan yeni gelindiyse karşılama mesajı */}

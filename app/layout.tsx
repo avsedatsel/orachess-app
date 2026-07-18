@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { AuthProvider } from "@/lib/auth-context";
-import { AuthNav } from "@/components/auth/AuthNav";
+import { TopBar } from "@/components/nav/TopBar";
 
 export const metadata: Metadata = {
   title: "OraChess - AI Satranç Ustalık Platformu",
@@ -17,7 +17,7 @@ export default function RootLayout({
     <html lang="tr">
       <body className="text-white min-h-screen antialiased">
         <AuthProvider>
-          <AuthNav />
+          <TopBar />
           {children}
         </AuthProvider>
       </body>

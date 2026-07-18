@@ -79,11 +79,8 @@ export default function IlerlemePage() {
   return (
     <main className="min-h-screen p-6 pt-20">
       <div className="max-w-3xl mx-auto">
-        <div className="flex items-center justify-between mb-8">
+        <div className="mb-8">
           <h1 className="text-3xl font-bold gradient-text">İlerlemem</h1>
-          <Link href="/" className="text-ora-gold hover:underline text-sm">
-            ← Ana Sayfa
-          </Link>
         </div>
 
         {/* Giriş kontrolü */}
