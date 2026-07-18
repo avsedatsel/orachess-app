@@ -134,16 +134,30 @@ DOĞRULANDI: Quiz çözüldü → sonuç tabloya yazıldı (1 record: seviye 7, 
 ---
 
 ## SONRAKİ ADIMLAR (YAPILACAKLAR)
-- [ ] Ana sayfaya (app/page.tsx) `/quiz` linki/butonu ekle (kullanıcı sınava kolay ulaşsın)
-- [ ] FAZA 3: Kullanıcı girişi (auth) — Supabase Auth ile
-- [ ] Quiz sonucunu kullanıcıya bağla (şu an anonim kaydediliyor, user_id yok)
-- [ ] Seviye sonucundan sonra doğru dashboard/eğitim içeriğine yönlendir
+- [x] Ana sayfaya (app/page.tsx) `/quiz` linki/butonu ekle ✅ (PR #1)
+- [x] FAZA 3: Kullanıcı girişi (auth) — Supabase Auth ile ✅ (PR #1)
+- [x] Quiz sonucunu kullanıcıya bağla (`user_id`) ✅ (PR #1 + Supabase'de kolon eklendi)
+- [x] Seviye sonucundan sonra doğru dashboard'a yönlendir ✅ (PR #1)
+- [x] Stockfish (WASM) entegrasyonu — Web Worker'da, ana thread'i bloklamıyor ✅ (PR #2)
+- [x] Kullanıcının kendi quiz geçmişini gördüğü "ilerleme" sayfası (`/ilerleme`) ✅ (PR #2)
+- [x] Sağ üstteki giriş çubuğu / iç sayfa "← Ana Sayfa" çakışması düzeltildi ✅ (PR #2)
 - [ ] FAZA 4: ElevenLabs (ses) + HeyGen (avatar) — canlı ders deneyimi
-- [ ] Stockfish (WASM) entegrasyonu — Web Worker üzerinde çalışmalı (ana thread'i bloklamamalı)
-- [ ] Müfredat içeriği (her seviye için dersler)
+- [ ] Müfredat içeriği (her seviye için dersler) — Gemini stratejisine bağlı
+
+## STOCKFISH ENTEGRASYONU (Faza 3.5 — TAMAMLANDI ✅)
+- Motor: Stockfish 18 **lite single-threaded WASM** (nmrugg/stockfish.js).
+  - Tek-thread → özel CORS/COEP header GEREKTİRMEZ, Vercel'de sorunsuz.
+  - Dosyalar repoda: `public/stockfish/stockfish-18-lite-single.{js,wasm}` (~7 MB).
+  - NOT: `stockfish` npm paketi build'i şişirdiği için (~240 MB) bağımlılık olarak
+    TUTULMADI; sadece iki dosya `public/`'e kondu.
+- `hooks/useStockfish.ts`: Worker + UCI protokolü, `analyze(fen, depth)` / `stop()`,
+  `evaluation` (skor + en iyi hamle) döner. Ana thread bloklanmaz.
+- `components/chess/AnalysisPanel.tsx`: değerlendirme çubuğu + skor + en iyi hamle (SAN).
+- `app/game/page.tsx`: analiz paneli, oynanan pozisyonu otomatik değerlendirir.
+- DOĞRULANDI: Chromium'da test edildi — başlangıç pozisyonunda "e4" (+0.37) döndü.
 
 ## SON GİT DURUMU
-- `c22a14c OraChess Faza 1` — pushlandı ✅
-- `144a4d7 Faza 2: Supabase veritabani baglantisi` — commit + push TAMAMLANDI ✅
-- (Not: Handoff sırasında "Faza 2 henüz push edilmedi" endişesi vardı; Claude Code
-  ortamında repo doğrulandı — commit GitHub'da mevcut, kod güvende.)
+- `c22a14c OraChess Faza 1` ✅
+- `144a4d7 Faza 2: Supabase veritabani baglantisi` ✅
+- `0d9d7c7 PR #1` (main'e merge edildi): ana sayfa butonu + Faza 3 giriş + yönlendirme ✅
+- Stockfish: yeni dalda, ayrı PR ile gelecek.
