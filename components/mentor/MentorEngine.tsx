@@ -7,6 +7,7 @@ import { analyzeMoveWithMentor } from "@/lib/ai/mentor-api";
 import { synthesizeSpeech } from "@/lib/ai/voice-api";
 import {
   getToneColor,
+  getVoiceParameters,
   TONE_MAPPING,
   type MentorResponse,
 } from "@/lib/ai/personality";
@@ -86,7 +87,13 @@ export const MentorEngine: React.FC<MentorEngineProps> = ({
     setSesDurumu("yukleniyor");
     setSesHata(null);
     try {
-      const r = await synthesizeSpeech(response.text);
+      // Adaptif ton → ElevenLabs ses parametreleri (stability/similarityBoost)
+      const toneLabel = TONE_MAPPING[response.tone]?.label ?? "";
+      const vp = getVoiceParameters(toneLabel);
+      const r = await synthesizeSpeech(response.text, {
+        stability: vp.stability,
+        similarityBoost: vp.similarityBoost,
+      });
       if ("audio" in r) {
         const audio = new Audio(r.audio);
         await audio.play();

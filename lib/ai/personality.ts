@@ -110,6 +110,54 @@ export function getToneDescription(tone: keyof typeof TONE_MAPPING): string {
   return TONE_MAPPING[tone]?.description || "Standart";
 }
 
+/**
+ * ADAPTIVE PERSONALITY CONTROLLER
+ * Doğa Hoca'nın tonunu kullanıcının Elo'suna ve o anki performansına göre seçer.
+ * (Gemini'nin pedagojik kararlarını yansıtan yapı.)
+ */
+export const getAdaptiveTone = (
+  userElo: number,
+  currentPerformance: number
+): string => {
+  // 0-1600 Elo: Hayat İçin Satranç (Stratejik/Metaforik)
+  if (userElo < 1600) {
+    if (currentPerformance < 50) return "Teşvik Edici"; // Hata artınca yumuşat
+    return "Bilge";
+  }
+  // 1600-2000 Elo: Geçiş ve Teknik Ustalık
+  if (userElo >= 1600 && userElo < 2000) {
+    return "Öğretici";
+  }
+  // 2000+ Elo: Teknik Direktör Modu (Psikoloji/Fizik/Analitik)
+  return "Zorlayıcı";
+};
+
+/** Ton'a göre ElevenLabs ses parametreleri (voice_settings). */
+export const getVoiceParameters = (
+  tone: string
+): { stability: number; similarityBoost: number; style: string } => {
+  switch (tone) {
+    case "Teşvik Edici":
+      return { stability: 0.5, similarityBoost: 0.75, style: "yavaş/tiz" };
+    case "Bilge":
+      return { stability: 0.7, similarityBoost: 0.8, style: "yavaş/pes" };
+    case "Öğretici":
+      return { stability: 0.6, similarityBoost: 0.7, style: "normal" };
+    case "Zorlayıcı":
+      return { stability: 0.4, similarityBoost: 0.85, style: "hızlı/tiz" };
+    default:
+      return { stability: 0.5, similarityBoost: 0.75, style: "normal" };
+  }
+};
+
+/** Seviye (0-11) → yaklaşık Elo (getAdaptiveTone için; seviye aralıklarının orta noktası). */
+export function levelToElo(level: number): number {
+  const midpoints = [
+    300, 725, 975, 1200, 1400, 1625, 1875, 2125, 2375, 2600, 2800, 2950,
+  ];
+  return midpoints[Math.max(0, Math.min(11, level))] ?? 1000;
+}
+
 export interface SocraticHint {
   isBest: boolean;
   guidance: string; // mentor prompt'una eklenecek yönlendirme

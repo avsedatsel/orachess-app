@@ -5,6 +5,9 @@ import {
   TONE_MAPPING,
   getLevelAdjustedPrompt,
   generateSocraticHint,
+  getAdaptiveTone,
+  levelToElo,
+  toneKeyFromLabel,
   MentorResponse,
   FeedbackCategory,
 } from "./personality";
@@ -41,7 +44,18 @@ export async function analyzeMoveWithMentor(params: {
       };
     }
 
-    const mentorPrompt = buildMentorPrompt(params);
+    // ADAPTIVE PERSONALITY: kullanıcının Elo'su + o anki performansına göre ton seç.
+    // Performans: en iyi hamleyi bulduysa yüksek, sapıyorsa düşük (yoksa nötr).
+    const userElo = levelToElo(params.userLevel);
+    const currentPerformance =
+      params.bestMove !== undefined
+        ? params.moveNotation === params.bestMove
+          ? 100
+          : 40
+        : 60;
+    const adaptiveTone = getAdaptiveTone(userElo, currentPerformance);
+
+    const mentorPrompt = buildMentorPrompt({ ...params, adaptiveTone });
     const systemPrompt = getLevelAdjustedPrompt(params.userLevel);
 
     // Gemini REST API (SDK bağımlılığı yok).
@@ -76,7 +90,12 @@ export async function analyzeMoveWithMentor(params: {
     const data = await res.json();
     const mentorText: string =
       data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
-    return parseAndStructureMentorResponse(mentorText, params);
+    const structured = parseAndStructureMentorResponse(mentorText, params);
+    // Adaptif tonu nihai cevaba uygula (UI rengi + ses parametreleri bununla belirlenir)
+    if (!("error" in structured)) {
+      structured.tone = toneKeyFromLabel(adaptiveTone);
+    }
+    return structured;
   } catch (error) {
     console.error("Mentor API Error:", error);
     return { error: "Mentor konsültasyonu sırasında bir hata oluştu." };
@@ -90,9 +109,10 @@ function buildMentorPrompt(params: {
   alternativeMoves?: string[];
   stockfishEvaluation?: number;
   bestMove?: string;
+  adaptiveTone?: string;
   context?: string;
 }): string {
-  const { userLevel, move, moveNotation, alternativeMoves, stockfishEvaluation, bestMove, context } = params;
+  const { userLevel, move, moveNotation, alternativeMoves, stockfishEvaluation, bestMove, adaptiveTone, context } = params;
 
   // Sokratik Analiz: kullanıcı hamlesi vs motorun en iyi hamlesi
   const socratic = bestMove
@@ -105,6 +125,7 @@ Seviye: ${userLevel}/11
 Hamle: ${moveNotation} (${move})
 ${alternativeMoves && alternativeMoves.length > 0 ? `Alternatifler: ${alternativeMoves.join(", ")}` : ""}
 ${stockfishEvaluation !== undefined ? `Stockfish: ${(stockfishEvaluation / 100).toFixed(2)}` : ""}
+${adaptiveTone ? `\n## TON (öğrencinin seviye/performansına göre belirlendi): Cevabını "${adaptiveTone}" tonunda ver ve JSON'daki "tone" alanını buna uygun seç.` : ""}
 ${socratic ? `\n## SOKRATİK YÖNLENDİRME (pedagojik amaç: ${socratic.pedagogicalGoal})\n${socratic.guidance}\n` : ""}${context ? `Bağlam: ${context}` : ""}
 
 Bu hamleyi analiz et ve JSON formatında cevap ver:
