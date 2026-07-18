@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { quizQuestions } from "@/lib/quiz-data";
 import { supabase } from "@/lib/supabase";
+import { useAuth } from "@/lib/auth-context";
 import {
   calculateLevel,
   generateLevelSummary,
@@ -25,6 +26,7 @@ interface QuizState {
 }
 
 export function QuizEngine() {
+  const { user } = useAuth();
   const [state, setState] = useState<QuizState>({
     currentQuestionIndex: 0,
     answers: [],
@@ -58,6 +60,8 @@ export function QuizEngine() {
         dogru_sayisi: result.correctAnswers,
         toplam_soru: result.totalQuestions,
         yuzde: detected.percentage,
+        // Giriş yapıldıysa sonucu kullanıcıya bağla (anonimse bu alan gönderilmez)
+        ...(user ? { user_id: user.id } : {}),
       });
       if (error) {
         console.error("Kayit hatasi:", error);
