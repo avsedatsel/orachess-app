@@ -148,6 +148,20 @@ DOĞRULANDI: Quiz çözüldü → sonuç tabloya yazıldı (1 record: seviye 7, 
 - [~] Müfredat içeriği (Ustalık Piramidi): Level 0 ilk 5 ders entegre edildi ✅
       (lib/lessons-data.ts + dashboard'da listeleniyor); kalan seviyeler bekliyor
 
+## SOKRATİK ANALİZ MOTORU (TAMAMLANDI ✅)
+- `personality.ts` → `generateSocraticHint(userMove, bestMove, positionEval)`:
+  kullanıcı hamlesini motorun en iyi hamlesiyle karşılaştırır; eşitse tebrik +
+  sezgi sorusu, değilse "cevabı verme, keşfe yönlendiren soru sor" (tone Bilge/Öğretici).
+  `SocraticHint = { isBest, guidance, pedagogicalGoal }`.
+- `chess-utils.ts` → `uciToSan(fen, uci)` (en iyi hamleyi okunabilir SAN'a çevirir).
+- `mentor-api.ts` → `buildMentorPrompt` bestMove'u alıp Sokratik yönlendirmeyi prompt'a
+  ekliyor; `analyzeMoveWithMentor` + `MentorEngine` `bestMove` parametresi taşıyor.
+- `app/game/page.tsx` → hamle ANINDA, o pozisyonun en iyi hamlesi (analiz panelinin
+  zaten hesapladığı) yakalanıp mentora iletiliyor (latestEvalRef/analyzedFenRef).
+  Böylece karşılaştırma DOĞRU pozisyona (hamleden önceki) ait olur.
+- DOĞRULANDI: build + Chromium smoke (hamle → mentor tetikleniyor, çökme yok).
+  Gerçek Sokratik metin canlıda GEMINI_API_KEY ile görünür.
+
 ## MÜFREDAT — USTALIK PİRAMİDİ (başladı ✅)
 - `lib/lessons-data.ts`: `Lesson` tipi + `LEVEL_0_LESSONS` (Level 0 ilk 5 ders).
   Her ders: id, title, content, `lifeConcept` (pedagojik), `tone`, `stability`,

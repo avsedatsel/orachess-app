@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { ChessBoard } from "@/components/chess/ChessBoard";
 import { MentorEngine } from "@/components/mentor/MentorEngine";
 import { AnalysisPanel } from "@/components/chess/AnalysisPanel";
-import { useStockfish } from "@/hooks/useStockfish";
-import { STARTING_FEN } from "@/lib/chess-utils";
+import { useStockfish, type StockfishEval } from "@/hooks/useStockfish";
+import { STARTING_FEN, uciToSan } from "@/lib/chess-utils";
 
 interface LastMove {
   from: string;
@@ -14,6 +14,7 @@ interface LastMove {
   san: string;
   fen: string;
   prevFen: string;
+  bestBefore: string | null; // hamleden ÖNCEki pozisyonun en iyi hamlesi (SAN)
 }
 
 interface MentorInput {
@@ -22,6 +23,7 @@ interface MentorInput {
   move: string;
   moveNotation: string;
   stockfishEvaluation?: number;
+  bestMove?: string;
 }
 
 export default function GamePage() {
@@ -31,13 +33,31 @@ export default function GamePage() {
 
   const currentFen = lastMove?.fen ?? STARTING_FEN;
 
+  // Hamle anında "o pozisyonun en iyi hamlesi"ni yakalamak için son analizi izle
+  const latestEvalRef = useRef<StockfishEval | null>(null);
+  const analyzedFenRef = useRef<string | null>(null);
+  useEffect(() => {
+    latestEvalRef.current = evaluation;
+  }, [evaluation]);
+  useEffect(() => {
+    analyzedFenRef.current = analyzedFen;
+  }, [analyzedFen]);
+
   const handleMove = (from: string, to: string, san: string, fen: string) => {
+    // Hamle yapılan pozisyon (currentFen), analizde bunun en iyi hamlesi hazırsa yakala
+    const movedFrom = lastMove?.fen ?? STARTING_FEN;
+    const ev = latestEvalRef.current;
+    const bestUci =
+      ev && analyzedFenRef.current === movedFrom ? ev.bestMove : null;
+    const bestBefore = bestUci ? uciToSan(movedFrom, bestUci) : null;
+
     setLastMove((prev) => ({
       from,
       to,
       san,
       fen,
       prevFen: prev?.fen || "start",
+      bestBefore,
     }));
   };
 
@@ -59,6 +79,7 @@ export default function GamePage() {
       move: `${lastMove.from}${lastMove.to}`,
       moveNotation: lastMove.san,
       stockfishEvaluation: evaluation.scoreCp ?? undefined,
+      bestMove: lastMove.bestBefore ?? undefined,
     });
   }, [lastMove, analyzing, evaluation, analyzedFen]);
 
@@ -94,6 +115,7 @@ export default function GamePage() {
                   move={mentorInput.move}
                   moveNotation={mentorInput.moveNotation}
                   stockfishEvaluation={mentorInput.stockfishEvaluation}
+                  bestMove={mentorInput.bestMove}
                 />
               ) : (
                 <div className="text-center py-8">

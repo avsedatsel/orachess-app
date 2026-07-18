@@ -110,6 +110,42 @@ export function getToneDescription(tone: keyof typeof TONE_MAPPING): string {
   return TONE_MAPPING[tone]?.description || "Standart";
 }
 
+export interface SocraticHint {
+  isBest: boolean;
+  guidance: string; // mentor prompt'una eklenecek yönlendirme
+  pedagogicalGoal: string;
+}
+
+/**
+ * SOKRATİK ANALİZ MOTORU
+ * Kullanıcının hamlesini motorun en iyi hamlesiyle karşılaştırır ve Doğa Hoca için
+ * YÖNLENDİRİCİ (cevabı vermeyen) bir ipucu üretir. Mentor bu ipucunu prompt'una alır:
+ * öğrenciye doğrudan cevabı söylemez, onu keşfe yönlendiren bir soru sorar.
+ */
+export function generateSocraticHint(
+  userMove: string,
+  bestMove: string,
+  positionEval: number
+): SocraticHint {
+  if (userMove === bestMove) {
+    return {
+      isBest: true,
+      guidance:
+        "Öğrenci, motorun da onayladığı en güçlü hamleyi buldu. Onu içtenlikle tebrik et ve 'Bu kararı verirken neyi hedefledin?' gibi bir soruyla sezgisini pekiştir.",
+      pedagogicalGoal: "Sezgiyi Pekiştirme",
+    };
+  }
+  return {
+    isBest: false,
+    guidance: `Öğrenci ${userMove} oynadı; motora göre ${bestMove} daha güçlüydü (değerlendirme: ${(
+      positionEval / 100
+    ).toFixed(
+      2
+    )}). ASLA doğrudan cevabı (${bestMove}) söyleme. Bunun yerine öğrenciyi keşfe yönlendiren tek bir soru sor — ör. "Şahının etrafındaki boşluğu fark ettin mi?" ya da "Bu hamlede taşların birbirini koruyor mu?". Tonun: Bilge/Öğretici.`,
+    pedagogicalGoal: "Analitik Düşünceyi Tetikleme",
+  };
+}
+
 /**
  * Müfredat/ders verisindeki Türkçe ton etiketini ("Bilge", "Öğretici" vb.)
  * TONE_MAPPING anahtarına çevirir. Böylece dersin tonu, persona/ses sistemine
