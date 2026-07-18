@@ -148,6 +148,16 @@ DOĞRULANDI: Quiz çözüldü → sonuç tabloya yazıldı (1 record: seviye 7, 
 - [~] Müfredat içeriği (Ustalık Piramidi): Level 0 ilk 5 ders entegre edildi ✅
       (lib/lessons-data.ts + dashboard'da listeleniyor); kalan seviyeler bekliyor
 
+## YASAL SAYFALAR & FOOTER (TAMAMLANDI ✅ — hukuki inceleme bekliyor)
+- `components/legal/Footer.tsx`: her sayfada footer (© + yasal linkler).
+- `app/kullanim-sartlari`, `app/gizlilik` (KVKK aydınlatma metni), `app/cerez-politikasi`:
+  Türkçe TASLAK metinler + [placeholder] alanlar + "hukuki inceleme önerilir" uyarısı.
+- KVKK metni: işlenen veriler (e-posta, sınav sonuçları), amaçlar, yurt dışı aktarım
+  (Supabase/Vercel/Google/ElevenLabs), m.11 hakları, başvuru.
+- SSL/HTTPS: Vercel otomatik sağlıyor (kod işi değil).
+- YAPILACAK (proje sahibi): [İşletme adı], [adres], [iletişim e-postası], [tarih] doldurulmalı;
+  metinler bir hukuk/KVKK danışmanına inceletilmeli; gerekiyorsa VERBİS kaydı + açık rıza akışı.
+
 ## PWA — MOBİL UYGULAMA (TAMAMLANDI ✅)
 - `public/manifest.json`: standalone uygulama (isim, ikon 192/512, tema #0F0E1A).
 - `public/icons/`: PNG ikonlar (marka piyonundan Chromium ile üretildi) + apple-touch-icon.
