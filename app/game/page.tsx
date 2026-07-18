@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { ChessBoard } from "@/components/chess/ChessBoard";
 import { MentorEngine } from "@/components/mentor/MentorEngine";
+import { AnalysisPanel } from "@/components/chess/AnalysisPanel";
+import { STARTING_FEN } from "@/lib/chess-utils";
 
 export default function GamePage() {
   const [lastMove, setLastMove] = useState<{
@@ -39,7 +41,9 @@ export default function GamePage() {
             <ChessBoard onMove={handleMove} />
           </div>
 
-          <div className="lg:col-span-1">
+          <div className="lg:col-span-1 space-y-6">
+            <AnalysisPanel fen={lastMove?.fen ?? STARTING_FEN} />
+
             <div className="bg-ora-slate/50 rounded-lg p-4 border border-gray-800">
               {lastMove ? (
                 <MentorEngine
