@@ -83,9 +83,10 @@ export interface MentorResponse {
 
 export const MENTOR_CONFIG = {
   num_suggestions: 2,
-  // Doğa Hoca'nın beyni: Google Gemini modeli (Google AI Studio, ücretsiz katman).
-  // Gerekirse burayı değiştirebilirsiniz (ör. "gemini-1.5-flash", "gemini-2.5-flash").
-  model: "gemini-2.0-flash",
+  // Doğa Hoca'nın beyni: Google Gemini modeli.
+  // NOT: gemini-2.0-flash kullanımdan kalktı (404). Güncel flash modeli kullanılıyor.
+  // Gerekirse burayı değiştirebilirsiniz (ör. "gemini-2.5-flash-lite", "gemini-2.5-pro").
+  model: "gemini-2.5-flash",
   temperature: 0.7,
   top_p: 0.9,
 };
