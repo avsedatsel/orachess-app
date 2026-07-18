@@ -50,8 +50,11 @@ export async function synthesizeSpeech(
     if (!res.ok) {
       const detail = await res.text().catch(() => "");
       console.error("ElevenLabs error:", res.status, detail);
-      // GEÇİCİ TEŞHİS: gerçek hatayı göster (çözülünce sadeleştirilecek)
-      return { error: `ElevenLabs (${res.status}): ${detail.slice(0, 250)}` };
+      // Kullanıcıya nazik, anlaşılır mesaj (ham hata konsola yazılır)
+      if (detail.includes("quota")) {
+        return { error: "Ses kredisi şu an yetersiz görünüyor." };
+      }
+      return { error: "Ses şu an üretilemedi." };
     }
 
     const buf = Buffer.from(await res.arrayBuffer());
