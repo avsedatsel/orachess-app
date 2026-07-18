@@ -39,6 +39,7 @@ export const MentorEngine: React.FC<MentorEngineProps> = ({
   const [sesDurumu, setSesDurumu] = useState<"bekliyor" | "yukleniyor" | "hata">(
     "bekliyor"
   );
+  const [sesHata, setSesHata] = useState<string | null>(null);
 
   const fetchMentorResponse = useCallback(async () => {
     if (!isOpen || !move) return;
@@ -80,6 +81,7 @@ export const MentorEngine: React.FC<MentorEngineProps> = ({
   const seslendir = useCallback(async () => {
     if (!response) return;
     setSesDurumu("yukleniyor");
+    setSesHata(null);
     try {
       const r = await synthesizeSpeech(response.text);
       if ("audio" in r) {
@@ -88,9 +90,11 @@ export const MentorEngine: React.FC<MentorEngineProps> = ({
         setSesDurumu("bekliyor");
       } else {
         console.error("Ses hatası:", r.error);
+        setSesHata(r.error);
         setSesDurumu("hata");
       }
-    } catch {
+    } catch (e) {
+      setSesHata(e instanceof Error ? e.message : String(e));
       setSesDurumu("hata");
     }
   }, [response]);
@@ -177,7 +181,9 @@ export const MentorEngine: React.FC<MentorEngineProps> = ({
                 )}
               </button>
               {sesDurumu === "hata" && (
-                <span className="text-xs text-error">Ses üretilemedi</span>
+                <span className="text-xs text-error">
+                  {sesHata || "Ses üretilemedi"}
+                </span>
               )}
             </div>
 
