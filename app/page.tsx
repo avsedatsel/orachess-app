@@ -31,10 +31,16 @@ export default function HomePage() {
           </div>
         </div>
 
-        <div className="flex gap-4 justify-center mt-8">
+        <div className="flex flex-wrap gap-4 justify-center mt-8">
+          <Link
+            href="/quiz"
+            className="px-8 py-3 bg-ora-gold text-ora-dark font-semibold rounded-lg hover:opacity-90 transition"
+          >
+            Seviye Tespit Sınavı
+          </Link>
           <Link
             href="/game"
-            className="px-8 py-3 bg-ora-gold text-ora-dark font-semibold rounded-lg hover:opacity-90 transition"
+            className="px-8 py-3 border border-ora-gold text-ora-gold font-semibold rounded-lg hover:bg-ora-gold/10 transition"
           >
             Oyuna Başla
           </Link>
