@@ -4,8 +4,10 @@ export default function HomePage() {
   return (
     <main className="min-h-screen flex flex-col items-center justify-center px-6 text-center">
       <div className="max-w-3xl space-y-8">
-        <h1 className="text-6xl font-bold gradient-text">OraChess</h1>
-        <p className="text-2xl text-gray-300">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold gradient-text">
+          OraChess
+        </h1>
+        <p className="text-xl sm:text-2xl text-gray-300">
           Dijital Ustalık Ekosistemi
         </p>
         <p className="text-lg text-gray-400 max-w-xl mx-auto">

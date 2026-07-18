@@ -64,7 +64,7 @@ export const ChessBoard: React.FC<ChessBoardProps> = ({ onMove }) => {
                 key={square}
                 data-sq={isLight ? "light" : "dark"}
                 onClick={() => handleSquareClick(square)}
-                className="w-16 h-16 sm:w-[68px] sm:h-[68px] flex items-center justify-center cursor-pointer relative select-none"
+                className="w-10 h-10 sm:w-14 sm:h-14 lg:w-16 lg:h-16 flex items-center justify-center cursor-pointer relative select-none"
                 style={{
                   backgroundColor: isSelected
                     ? SELECTED
