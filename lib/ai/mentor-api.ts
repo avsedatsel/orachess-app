@@ -1,6 +1,5 @@
 "use server";
 
-import { OpenAI } from "openai";
 import {
   MENTOR_CONFIG,
   TONE_MAPPING,
@@ -9,6 +8,14 @@ import {
   FeedbackCategory,
 } from "./personality";
 
+/**
+ * Doğa Hoca'nın "beyni": Google Gemini (metin üretimi).
+ * Ses (ElevenLabs) ayrı bir katmandır (Faz 4) ve burayı etkilemez.
+ *
+ * Çalışması için Vercel'de `GEMINI_API_KEY` tanımlı olmalıdır
+ * (Google AI Studio'dan ücretsiz alınır). Anahtar yoksa build/çalışma zamanı
+ * ÇÖKMEZ; net bir hata döner.
+ */
 export async function analyzeMoveWithMentor(params: {
   userLevel: number;
   previousFen: string;
@@ -24,35 +31,46 @@ export async function analyzeMoveWithMentor(params: {
       return { error: "Invalid move data" };
     }
 
-    // OpenAI istemcisini burada oluştur (modül yüklenirken değil) ve anahtarı kontrol et.
-    // Böylece anahtar yoksa build/çalışma zamanı çökmez, net bir hata döner.
-    if (!process.env.OPENAI_API_KEY) {
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
       return {
         error:
-          "Doğa Hoca şu an yapılandırılmadı (OPENAI_API_KEY eksik). Vercel ayarlarından eklenmeli.",
+          "Doğa Hoca şu an yapılandırılmadı (GEMINI_API_KEY eksik). Vercel ayarlarından eklenmeli.",
       };
     }
-    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
     const mentorPrompt = buildMentorPrompt(params);
     const systemPrompt = getLevelAdjustedPrompt(params.userLevel);
 
-    const response = await openai.chat.completions.create({
-      model: MENTOR_CONFIG.model,
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: mentorPrompt },
-      ],
-      temperature: MENTOR_CONFIG.temperature,
-      top_p: MENTOR_CONFIG.top_p,
-      max_tokens: 500,
+    // Gemini REST API (SDK bağımlılığı yok)
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${MENTOR_CONFIG.model}:generateContent?key=${apiKey}`;
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        systemInstruction: { parts: [{ text: systemPrompt }] },
+        contents: [{ role: "user", parts: [{ text: mentorPrompt }] }],
+        generationConfig: {
+          temperature: MENTOR_CONFIG.temperature,
+          topP: MENTOR_CONFIG.top_p,
+          maxOutputTokens: 500,
+        },
+      }),
     });
 
-    const mentorText = response.choices[0]?.message?.content || "";
+    if (!res.ok) {
+      const detail = await res.text().catch(() => "");
+      console.error("Gemini API Error:", res.status, detail);
+      return { error: "Mentor konsültasyonu sırasında bir hata oluştu." };
+    }
+
+    const data = await res.json();
+    const mentorText: string =
+      data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
     return parseAndStructureMentorResponse(mentorText, params);
   } catch (error) {
     console.error("Mentor API Error:", error);
-    return { error: "Mentor konsultasyonu sırasında bir hata oluştu." };
+    return { error: "Mentor konsültasyonu sırasında bir hata oluştu." };
   }
 }
 
