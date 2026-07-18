@@ -2,11 +2,12 @@
 
 import React, { useState } from "react";
 import { Chess } from "chess.js";
+import { PieceSprite } from "./PieceSprite";
 
-const PIECE_SYMBOLS: Record<string, string> = {
-  wp: "♙", wn: "♘", wb: "♗", wr: "♖", wq: "♕", wk: "♔",
-  bp: "♟", bn: "♞", bb: "♝", br: "♜", bq: "♛", bk: "♚",
-};
+// Tahta kare renkleri (koyu kare siyah taşlarla karışmayacak tonda)
+const BOARD_LIGHT = "#EDD9B8"; // açık kare
+const BOARD_DARK = "#A97A54"; // koyu kare (sıcak ahşap tonu)
+const SELECTED = "#D4AF37"; // seçili kare (ora-gold)
 
 interface ChessBoardProps {
   onMove?: (from: string, to: string, san: string, fen: string) => void;
@@ -45,7 +46,10 @@ export const ChessBoard: React.FC<ChessBoardProps> = ({ onMove }) => {
   };
 
   return (
-    <div className="inline-block border-4 border-ora-gold rounded-lg overflow-hidden shadow-2xl">
+    <div className="inline-block border-[6px] border-ora-gold rounded-lg overflow-hidden shadow-2xl">
+      {/* Taş sprite'ı (gizli, bir kez) */}
+      <PieceSprite />
+
       {ranks.map((rank) => (
         <div key={rank} className="flex">
           {files.map((file, fileIdx) => {
@@ -58,26 +62,30 @@ export const ChessBoard: React.FC<ChessBoardProps> = ({ onMove }) => {
             return (
               <div
                 key={square}
+                data-sq={isLight ? "light" : "dark"}
                 onClick={() => handleSquareClick(square)}
-                className="w-14 h-14 flex items-center justify-center cursor-pointer relative text-4xl select-none"
+                className="w-16 h-16 sm:w-[68px] sm:h-[68px] flex items-center justify-center cursor-pointer relative select-none"
                 style={{
                   backgroundColor: isSelected
-                    ? "#D4AF37"
+                    ? SELECTED
                     : isLight
-                    ? "#E8D5B7"
-                    : "#6B4423",
+                    ? BOARD_LIGHT
+                    : BOARD_DARK,
                 }}
               >
                 {piece && (
-                  <span style={{ color: piece.color === "w" ? "#fff" : "#000", textShadow: "0 1px 2px rgba(0,0,0,0.4)" }}>
-                    {PIECE_SYMBOLS[`${piece.color}${piece.type}`]}
-                  </span>
+                  <svg
+                    viewBox="0 0 40 40"
+                    className="w-[86%] h-[86%] pointer-events-none drop-shadow-sm"
+                  >
+                    <use href={`#${piece.color}${piece.type}`} />
+                  </svg>
                 )}
                 {isTarget && !piece && (
-                  <div className="absolute w-4 h-4 rounded-full bg-ora-gold opacity-60" />
+                  <div className="absolute w-4 h-4 rounded-full bg-black/30" />
                 )}
                 {isTarget && piece && (
-                  <div className="absolute inset-0 border-4 border-ora-gold opacity-70" />
+                  <div className="absolute inset-0 ring-4 ring-inset ring-black/30" />
                 )}
               </div>
             );

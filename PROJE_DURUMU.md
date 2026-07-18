@@ -141,8 +141,20 @@ DOĞRULANDI: Quiz çözüldü → sonuç tabloya yazıldı (1 record: seviye 7, 
 - [x] Stockfish (WASM) entegrasyonu — Web Worker'da, ana thread'i bloklamıyor ✅ (PR #2)
 - [x] Kullanıcının kendi quiz geçmişini gördüğü "ilerleme" sayfası (`/ilerleme`) ✅ (PR #2)
 - [x] Sağ üstteki giriş çubuğu / iç sayfa "← Ana Sayfa" çakışması düzeltildi ✅ (PR #2)
+- [x] Profesyonel satranç tahtası: Unicode harfler yerine SVG taşları (Wikimedia cburnett, CC BY-SA 3.0) ✅
 - [ ] FAZA 4: ElevenLabs (ses) + HeyGen (avatar) — canlı ders deneyimi
 - [ ] Müfredat içeriği (her seviye için dersler) — Gemini stratejisine bağlı
+
+## SATRANÇ TAHTASI GÖRSEL İYİLEŞTİRME (TAMAMLANDI ✅)
+- Eski: Unicode harf-taşları (♟) — "acemi" görünüm.
+- Yeni: gerçek SVG taşları (Wikimedia "Standard"/cburnett seti, CC BY-SA 3.0).
+  - `public/pieces/standard.svg`: 12 taşlık SVG sprite (lisans başlığı korundu).
+  - `components/chess/PieceSprite.tsx`: sprite'ı sayfaya gizli gömer (Safari dahil çalışır).
+  - `components/chess/ChessBoard.tsx`: her kare `<use href="#wp" />` ile taşı çizer.
+  - Tahta rengi: Ahşap/kahve (açık #EDD9B8, koyu #A97A54) — koyu kare siyah taşlarla karışmıyor.
+  - Renkler `ChessBoard.tsx` üstünde sabit (BOARD_LIGHT/BOARD_DARK) — kolayca değiştirilebilir.
+- ATIF: `ATTRIBUTIONS.md` (CC BY-SA 3.0 gereği). Taşlar chess.com'dan DEĞİL; ücretsiz açık set.
+- DOĞRULANDI: Chromium'da 32 taşın hepsi render edildi.
 
 ## STOCKFISH ENTEGRASYONU (Faza 3.5 — TAMAMLANDI ✅)
 - Motor: Stockfish 18 **lite single-threaded WASM** (nmrugg/stockfish.js).
