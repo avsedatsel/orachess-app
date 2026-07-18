@@ -83,10 +83,11 @@ export interface MentorResponse {
 
 export const MENTOR_CONFIG = {
   num_suggestions: 2,
-  // Doğa Hoca'nın beyni: Google Gemini modeli.
-  // NOT: gemini-2.0-flash kullanımdan kalktı (404). Güncel flash modeli kullanılıyor.
-  // Gerekirse burayı değiştirebilirsiniz (ör. "gemini-2.5-flash-lite", "gemini-2.5-pro").
-  model: "gemini-2.5-flash",
+  // Doğa Hoca'nın beyni: Google Gemini.
+  // "gemini-flash-latest" = her zaman EN GÜNCEL flash modeline işaret eden takma ad.
+  // Böylece model eskise bile "404 model kalktı" yaşanmaz. Daha yüksek kalite için
+  // "gemini-pro-latest" yapılabilir (biraz daha pahalı/yavaş).
+  model: "gemini-flash-latest",
   temperature: 0.7,
   top_p: 0.9,
 };
