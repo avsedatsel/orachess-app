@@ -58,7 +58,9 @@ export async function analyzeMoveWithMentor(params: {
         generationConfig: {
           temperature: MENTOR_CONFIG.temperature,
           topP: MENTOR_CONFIG.top_p,
-          maxOutputTokens: 500,
+          maxOutputTokens: 2048,
+          // Temiz JSON döndür (markdown kod bloğu olmadan)
+          responseMimeType: "application/json",
         },
       }),
     });
@@ -119,7 +121,12 @@ function parseAndStructureMentorResponse(
   params: { userLevel: number }
 ): MentorResponse | { error: string } {
   try {
-    const jsonMatch = mentorText.match(/\{[\s\S]*\}/);
+    // Olası markdown kod bloğu işaretlerini temizle (```json ... ```）
+    const cleaned = mentorText
+      .replace(/```json/gi, "")
+      .replace(/```/g, "")
+      .trim();
+    const jsonMatch = cleaned.match(/\{[\s\S]*\}/);
     if (!jsonMatch) {
       return createFallbackResponse(mentorText, params);
     }
