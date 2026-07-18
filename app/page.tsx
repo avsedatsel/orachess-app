@@ -1,8 +1,9 @@
 import Link from "next/link";
+import { InstallButton } from "@/components/pwa/InstallButton";
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center px-6 text-center">
+    <main className="min-h-screen flex flex-col items-center justify-center px-6 py-20 text-center">
       <div className="max-w-3xl space-y-8">
         <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold gradient-text">
           OraChess
@@ -52,6 +53,10 @@ export default function HomePage() {
           >
             Kontrol Paneli
           </Link>
+        </div>
+
+        <div className="mt-6 flex justify-center">
+          <InstallButton />
         </div>
       </div>
     </main>
