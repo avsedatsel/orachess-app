@@ -25,6 +25,8 @@ export function useStockfish() {
   const [ready, setReady] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
   const [evaluation, setEvaluation] = useState<StockfishEval | null>(null);
+  // Şu an analiz edilen/edilmiş pozisyon (skorun hangi pozisyona ait olduğunu bilmek için)
+  const [analyzedFen, setAnalyzedFen] = useState<string | null>(null);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -108,6 +110,7 @@ export function useStockfish() {
     const worker = workerRef.current;
     if (!worker) return;
     turnRef.current = fen.split(" ")[1] === "b" ? "b" : "w";
+    setAnalyzedFen(fen);
     setEvaluation(null);
     setAnalyzing(true);
     worker.postMessage("stop");
@@ -121,5 +124,5 @@ export function useStockfish() {
     setAnalyzing(false);
   }, []);
 
-  return { ready, analyzing, evaluation, analyze, stop };
+  return { ready, analyzing, evaluation, analyzedFen, analyze, stop };
 }

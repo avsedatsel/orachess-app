@@ -1,18 +1,20 @@
 "use client";
 
 /**
- * AnalysisPanel — Stockfish analiz kutusu
- * Verilen FEN pozisyonunu motorla değerlendirir; değerlendirme çubuğu,
- * sayısal skor ve önerilen en iyi hamleyi gösterir.
+ * AnalysisPanel — Stockfish analiz kutusu (sunum bileşeni)
+ * Değerlendirmeyi dışarıdan prop olarak alır (worker oyun sayfasında yönetilir),
+ * böylece aynı değerlendirme hem burada hem Doğa Hoca'da kullanılabilir.
  */
 
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { Chess } from "chess.js";
-import { useStockfish, type StockfishEval } from "@/hooks/useStockfish";
+import { type StockfishEval } from "@/hooks/useStockfish";
 
 interface AnalysisPanelProps {
   fen: string;
-  depth?: number;
+  evaluation: StockfishEval | null;
+  ready: boolean;
+  analyzing: boolean;
 }
 
 // UCI hamlesini ("e2e4") okunabilir SAN'a ("e4") çevir
@@ -50,19 +52,16 @@ function whitePercentage(evalData: StockfishEval | null): number {
   if (!evalData) return 50;
   if (evalData.mateIn !== null) return evalData.mateIn > 0 ? 100 : 0;
   if (evalData.scoreCp === null) return 50;
-  // Yumuşak (sigmoid) eşleme
   const cp = Math.max(-1000, Math.min(1000, evalData.scoreCp));
   return 50 + 50 * (2 / (1 + Math.exp(-0.004 * cp)) - 1);
 }
 
-export function AnalysisPanel({ fen, depth = 15 }: AnalysisPanelProps) {
-  const { ready, analyzing, evaluation, analyze } = useStockfish();
-
-  // Pozisyon değiştiğinde otomatik analiz
-  useEffect(() => {
-    if (ready && fen) analyze(fen, depth);
-  }, [ready, fen, depth, analyze]);
-
+export function AnalysisPanel({
+  fen,
+  evaluation,
+  ready,
+  analyzing,
+}: AnalysisPanelProps) {
   const bestSan = useMemo(
     () => uciToSan(fen, evaluation?.bestMove ?? null),
     [fen, evaluation?.bestMove]
@@ -85,7 +84,8 @@ export function AnalysisPanel({ fen, depth = 15 }: AnalysisPanelProps) {
 
       {!ready ? (
         <p className="text-sm text-gray-400 py-4 text-center">
-          Motor yükleniyor… <span className="text-gray-600">(ilk seferde birkaç saniye)</span>
+          Motor yükleniyor…{" "}
+          <span className="text-gray-600">(ilk seferde birkaç saniye)</span>
         </p>
       ) : (
         <>
