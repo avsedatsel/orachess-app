@@ -22,6 +22,8 @@ interface MentorEngineProps {
   stockfishEvaluation?: number;
   bestMove?: string;
   isOpen?: boolean;
+  /** Mentor yanıtı hazır olduğunda üst katmana (orchestrator) iletir. */
+  onResponse?: (response: MentorResponse) => void;
 }
 
 export const MentorEngine: React.FC<MentorEngineProps> = ({
@@ -34,6 +36,7 @@ export const MentorEngine: React.FC<MentorEngineProps> = ({
   stockfishEvaluation,
   bestMove,
   isOpen = true,
+  onResponse,
 }) => {
   const [response, setResponse] = useState<MentorResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -67,13 +70,14 @@ export const MentorEngine: React.FC<MentorEngineProps> = ({
         setError(result.error);
       } else {
         setResponse(result);
+        onResponse?.(result);
       }
     } catch {
       setError("Mentor'la iletişim kurulamadı.");
     } finally {
       setIsLoading(false);
     }
-  }, [userLevel, previousFen, currentFen, move, moveNotation, alternativeMoves, stockfishEvaluation, bestMove, isOpen]);
+  }, [userLevel, previousFen, currentFen, move, moveNotation, alternativeMoves, stockfishEvaluation, bestMove, isOpen, onResponse]);
 
   useEffect(() => {
     if (isOpen && move) {

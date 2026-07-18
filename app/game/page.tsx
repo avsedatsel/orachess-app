@@ -1,12 +1,17 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { ChessBoard } from "@/components/chess/ChessBoard";
 import { MentorEngine } from "@/components/mentor/MentorEngine";
 import { AnalysisPanel } from "@/components/chess/AnalysisPanel";
 import { useStockfish, type StockfishEval } from "@/hooks/useStockfish";
 import { useUserLevel } from "@/hooks/useUserLevel";
 import { STARTING_FEN, uciToSan } from "@/lib/chess-utils";
+import {
+  orchestrateResponse,
+  runSystemIntegrityCheck,
+} from "@/lib/orchestrator";
+import type { MentorResponse } from "@/lib/ai/personality";
 
 interface LastMove {
   from: string;
@@ -67,6 +72,21 @@ export default function GamePage() {
     if (ready) analyze(currentFen);
   }, [ready, currentFen, analyze]);
 
+  // "Head Coach" birleştirme katmanı: Doğa Hoca'nın pedagojik yanıtı hazır
+  // olduğunda, Stockfish'in son teknik değerlendirmesiyle TEK pakette birleştir.
+  const handleMentorResponse = useCallback((response: MentorResponse) => {
+    // Bütünlük kontrolü: pedagojik + teknik akış eşzamanlı hazır mı?
+    runSystemIntegrityCheck({
+      mentorApi: response,
+      personality: { currentTone: response.tone },
+      dashboard: { insightCard: true },
+      engine: { status: ready ? "ready" : "loading" },
+    });
+
+    const combined = orchestrateResponse(latestEvalRef.current, response);
+    console.log("[OraChess Head Coach] Birleşik yanıt:", combined);
+  }, [ready]);
+
   // Analiz TAMAMLANINCA (skor kesinleşince) Doğa Hoca'ya gönderilecek girdiyi hazırla.
   // analyzedFen === currentFen kontrolü, skorun bu hamleye ait olmasını garantiler.
   useEffect(() => {
@@ -114,6 +134,7 @@ export default function GamePage() {
                   moveNotation={mentorInput.moveNotation}
                   stockfishEvaluation={mentorInput.stockfishEvaluation}
                   bestMove={mentorInput.bestMove}
+                  onResponse={handleMentorResponse}
                 />
               ) : (
                 <div className="text-center py-8">
