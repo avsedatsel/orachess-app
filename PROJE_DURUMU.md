@@ -138,9 +138,9 @@ DOĞRULANDI: Quiz çözüldü → sonuç tabloya yazıldı (1 record: seviye 7, 
 - [x] FAZA 3: Kullanıcı girişi (auth) — Supabase Auth ile ✅ (PR #1)
 - [x] Quiz sonucunu kullanıcıya bağla (`user_id`) ✅ (PR #1 + Supabase'de kolon eklendi)
 - [x] Seviye sonucundan sonra doğru dashboard'a yönlendir ✅ (PR #1)
-- [x] Stockfish (WASM) entegrasyonu — Web Worker'da, ana thread'i bloklamıyor ✅
-- [ ] Kullanıcının kendi quiz geçmişini gördüğü "ilerleme" sayfası
-- [ ] Sağ üstteki giriş çubuğu ile iç sayfa "← Ana Sayfa" linkinin çakışması (küçük kozmetik)
+- [x] Stockfish (WASM) entegrasyonu — Web Worker'da, ana thread'i bloklamıyor ✅ (PR #2)
+- [x] Kullanıcının kendi quiz geçmişini gördüğü "ilerleme" sayfası (`/ilerleme`) ✅ (PR #2)
+- [x] Sağ üstteki giriş çubuğu / iç sayfa "← Ana Sayfa" çakışması düzeltildi ✅ (PR #2)
 - [ ] FAZA 4: ElevenLabs (ses) + HeyGen (avatar) — canlı ders deneyimi
 - [ ] Müfredat içeriği (her seviye için dersler) — Gemini stratejisine bağlı
 

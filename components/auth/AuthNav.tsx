@@ -18,7 +18,13 @@ export function AuthNav() {
     <div className="fixed top-4 right-4 z-50 flex items-center gap-3 text-sm">
       {user ? (
         <>
-          <span className="text-gray-300 hidden sm:inline">{user.email}</span>
+          <span className="text-gray-300 hidden md:inline">{user.email}</span>
+          <Link
+            href="/ilerleme"
+            className="px-4 py-2 border border-ora-gold text-ora-gold rounded-lg hover:bg-ora-gold/10 transition"
+          >
+            İlerlemem
+          </Link>
           <button
             onClick={() => signOut()}
             className="px-4 py-2 border border-gray-600 text-gray-200 rounded-lg hover:bg-gray-800 transition"
