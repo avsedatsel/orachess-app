@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { quizQuestions } from "@/lib/quiz-data";
+import { supabase } from "@/lib/supabase";
 import {
   calculateLevel,
   generateLevelSummary,
@@ -32,6 +33,9 @@ export function QuizEngine() {
     detectedLevel: null,
   });
 
+  // Supabase kayit durumu
+  const [kayitDurumu, setKayitDurumu] = useState<"bekliyor" | "kaydediliyor" | "basarili" | "hata">("bekliyor");
+
   const selectedQuestions = React.useMemo(() => {
     const groups = [
       quizQuestions.filter((q) => q.level <= 2),
@@ -42,6 +46,30 @@ export function QuizEngine() {
       group.sort(() => Math.random() - 0.5).slice(0, 3)
     );
   }, []);
+
+  // Sonucu Supabase'e kaydet
+  const sonucuKaydet = async (result: QuizResult, detected: DetectedLevel) => {
+    setKayitDurumu("kaydediliyor");
+    try {
+      const { error } = await supabase.from("quiz_sonuclari").insert({
+        seviye: detected.level,
+        seviye_adi: detected.levelName,
+        elo_araligi: detected.eloRange,
+        dogru_sayisi: result.correctAnswers,
+        toplam_soru: result.totalQuestions,
+        yuzde: detected.percentage,
+      });
+      if (error) {
+        console.error("Kayit hatasi:", error);
+        setKayitDurumu("hata");
+      } else {
+        setKayitDurumu("basarili");
+      }
+    } catch (e) {
+      console.error("Baglanti hatasi:", e);
+      setKayitDurumu("hata");
+    }
+  };
 
   const handleAnswer = (selectedIndex: number) => {
     const currentQuestion = selectedQuestions[state.currentQuestionIndex];
@@ -68,6 +96,8 @@ export function QuizEngine() {
         result: quizResult,
         detectedLevel: detected,
       });
+      // Sonucu veritabanina kaydet
+      sonucuKaydet(quizResult, detected);
     } else {
       setState({
         ...state,
@@ -85,6 +115,7 @@ export function QuizEngine() {
       result: null,
       detectedLevel: null,
     });
+    setKayitDurumu("bekliyor");
   };
 
   if (!state.isComplete) {
@@ -97,7 +128,7 @@ export function QuizEngine() {
       <div className="w-full max-w-2xl mx-auto px-4 py-8">
         <div className="mb-8">
           <div className="flex justify-between items-center mb-3">
-            <h2 className="text-xl font-bold text-white">Seviye Tespit Sinavi</h2>
+            <h2 className="text-xl font-bold text-white">Seviye Tespit Sınavı</h2>
             <span className="text-sm text-gray-400">
               Soru {state.currentQuestionIndex + 1} / {selectedQuestions.length}
             </span>
@@ -147,8 +178,8 @@ export function QuizEngine() {
         </motion.div>
 
         <div className="bg-blue-900 bg-opacity-30 border-l-4 border-blue-500 p-4 rounded text-blue-200 text-sm">
-          <p className="font-semibold mb-1">Ipucu:</p>
-          <p>Lutfen dikkatle dusun. Dogru cevap sana dogru seviyeyi belirlemede yardimci olacak.</p>
+          <p className="font-semibold mb-1">İpucu:</p>
+          <p>Lütfen dikkatle düşün. Doğru cevap sana doğru seviyeyi belirlemede yardımcı olacak.</p>
         </div>
       </div>
     );
@@ -161,7 +192,7 @@ export function QuizEngine() {
       <div className="w-full max-w-2xl mx-auto px-4 py-8">
         <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="text-center mb-12">
           <h2 className="text-4xl font-bold text-white mb-4">Tebrikler!</h2>
-          <p className="text-gray-400 text-lg">Seviye tespit sinavi tamamlandi</p>
+          <p className="text-gray-400 text-lg">Seviye tespit sınavı tamamlandı</p>
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-gradient-to-br from-gray-800 via-gray-900 to-black border border-gray-700 rounded-lg p-8 mb-8">
@@ -170,17 +201,17 @@ export function QuizEngine() {
               <span className="text-4xl font-bold text-white">{state.detectedLevel.percentage}%</span>
             </div>
             <p className="text-gray-400 text-sm">
-              {state.result!.correctAnswers} / {state.result!.totalQuestions} Dogru Cevap
+              {state.result!.correctAnswers} / {state.result!.totalQuestions} Doğru Cevap
             </p>
           </div>
 
           <div className="bg-gray-700 bg-opacity-50 rounded-lg p-6 mb-6">
-            <h3 className="text-gray-400 text-sm font-semibold mb-2">TESPIT EDILEN SEVIYE</h3>
+            <h3 className="text-gray-400 text-sm font-semibold mb-2">TESPİT EDİLEN SEVİYE</h3>
             <p className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 mb-2">
               {state.detectedLevel.levelName}
             </p>
             <p className="text-gray-300 text-lg">
-              Elo Araligi: <span className="font-bold">{state.detectedLevel.eloRange}</span>
+              Elo Aralığı: <span className="font-bold">{state.detectedLevel.eloRange}</span>
             </p>
           </div>
 
@@ -192,21 +223,32 @@ export function QuizEngine() {
 
           <div className="grid grid-cols-2 gap-4 mb-6">
             <div className="bg-gray-700 bg-opacity-50 p-4 rounded text-center">
-              <p className="text-gray-400 text-xs font-semibold mb-2">ONERILEN DERS</p>
+              <p className="text-gray-400 text-xs font-semibold mb-2">ÖNERİLEN DERS</p>
               <p className="text-2xl font-bold text-blue-400">{summary.recommendedLessonCount}</p>
             </div>
             <div className="bg-gray-700 bg-opacity-50 p-4 rounded text-center">
-              <p className="text-gray-400 text-xs font-semibold mb-2">TAHMINI SURE</p>
+              <p className="text-gray-400 text-xs font-semibold mb-2">TAHMİNİ SÜRE</p>
               <p className="text-2xl font-bold text-emerald-400">{summary.estimatedCompletionTime}</p>
             </div>
           </div>
 
+          {/* Kayit durumu bildirimi */}
+          {kayitDurumu === "kaydediliyor" && (
+            <p className="text-center text-gray-400 text-sm mb-4">Sonucun kaydediliyor...</p>
+          )}
+          {kayitDurumu === "basarili" && (
+            <p className="text-center text-green-400 text-sm mb-4">✓ Sonucun kaydedildi</p>
+          )}
+          {kayitDurumu === "hata" && (
+            <p className="text-center text-red-400 text-sm mb-4">Sonuc kaydedilemedi (baglanti sorunu)</p>
+          )}
+
           <div className="flex gap-4">
             <button onClick={handleRestart} className="flex-1 bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-4 rounded-lg">
-              Sinavi Tekrar Yap
+              Sınavı Tekrar Yap
             </button>
-            <button onClick={() => alert("Egitime baslıyorsun!")} className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-3 px-4 rounded-lg">
-              Egitime Basla
+            <button onClick={() => alert("Eğitime başlıyorsun!")} className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-3 px-4 rounded-lg">
+              Eğitime Başla
             </button>
           </div>
         </motion.div>
