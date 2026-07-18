@@ -4,6 +4,7 @@ import {
   MENTOR_CONFIG,
   TONE_MAPPING,
   getLevelAdjustedPrompt,
+  generateSocraticHint,
   MentorResponse,
   FeedbackCategory,
 } from "./personality";
@@ -24,6 +25,7 @@ export async function analyzeMoveWithMentor(params: {
   moveNotation: string;
   alternativeMoves?: string[];
   stockfishEvaluation?: number;
+  bestMove?: string;
   context?: string;
 }): Promise<MentorResponse | { error: string }> {
   try {
@@ -87,16 +89,23 @@ function buildMentorPrompt(params: {
   moveNotation: string;
   alternativeMoves?: string[];
   stockfishEvaluation?: number;
+  bestMove?: string;
   context?: string;
 }): string {
-  const { userLevel, move, moveNotation, alternativeMoves, stockfishEvaluation, context } = params;
+  const { userLevel, move, moveNotation, alternativeMoves, stockfishEvaluation, bestMove, context } = params;
+
+  // Sokratik Analiz: kullanıcı hamlesi vs motorun en iyi hamlesi
+  const socratic = bestMove
+    ? generateSocraticHint(moveNotation, bestMove, stockfishEvaluation ?? 0)
+    : null;
+
   return `## HAMLE ANALIZ İSTEĞİ
 
 Seviye: ${userLevel}/11
 Hamle: ${moveNotation} (${move})
 ${alternativeMoves && alternativeMoves.length > 0 ? `Alternatifler: ${alternativeMoves.join(", ")}` : ""}
 ${stockfishEvaluation !== undefined ? `Stockfish: ${(stockfishEvaluation / 100).toFixed(2)}` : ""}
-${context ? `Bağlam: ${context}` : ""}
+${socratic ? `\n## SOKRATİK YÖNLENDİRME (pedagojik amaç: ${socratic.pedagogicalGoal})\n${socratic.guidance}\n` : ""}${context ? `Bağlam: ${context}` : ""}
 
 Bu hamleyi analiz et ve JSON formatında cevap ver:
 {

@@ -51,6 +51,22 @@ export function getLegalMoves(fen: string): string[] {
   }
 }
 
+/** UCI hamlesini ("g1f3") verilen pozisyona göre SAN'a ("Nf3") çevirir. */
+export function uciToSan(fen: string, uci: string | null | undefined): string | null {
+  if (!uci || uci.length < 4) return null;
+  try {
+    const game = new Chess(fen);
+    const move = game.move({
+      from: uci.slice(0, 2),
+      to: uci.slice(2, 4),
+      promotion: uci.length > 4 ? uci.slice(4, 5) : undefined,
+    });
+    return move?.san ?? null;
+  } catch {
+    return null;
+  }
+}
+
 export function getTurn(fen: string): "w" | "b" {
   const parts = fen.split(" ");
   return (parts[1] as "w" | "b") || "w";
