@@ -16,7 +16,7 @@ Bir adım tamamlanmadan diğerine geçilmemeli.
 - Animasyon: framer-motion
 - Satranç: chess.js (mantık) + stockfish.js (WASM analiz — henüz eklenmedi)
 - Veritabanı: Supabase (PostgreSQL) — KURULDU ve BAĞLANDI
-- AI Mentor: OpenAI GPT-4o (personality.ts'de tanımlı)
+- AI Mentor (beyin): Google Gemini (gemini-2.0-flash) — mentor-api.ts, REST ile
 - Deploy: GitHub + Vercel (otomatik CI/CD kurulu)
 - Ses/Avatar (Faz 4, henüz yok): ElevenLabs + HeyGen
 
@@ -175,7 +175,7 @@ DOĞRULANDI: Quiz çözüldü → sonuç tabloya yazıldı (1 record: seviye 7, 
   - `mentor-api.ts` zaten `stockfishEvaluation` parametresini prompt'a ekliyordu.
   - DOĞRULANDI: e2-e4 sonrası mentor tetiklendi (tek POST); Stockfish yeni pozisyonu
     "e5" (+0.32) olarak değerlendirdi. NOT: Doğa Hoca'nın metin üretmesi için Vercel'de
-    `OPENAI_API_KEY` env değişkeni TANIMLI OLMALI; yoksa mentor hata verir (Stockfish etkilenmez).
+    `GEMINI_API_KEY` env değişkeni TANIMLI OLMALI; yoksa mentor hata verir (Stockfish etkilenmez).
 
 ## KRİTİK DEPLOY DÜZELTMESİ (ÇÖZÜLDÜ ✅)
 - SORUN: Vercel'deki TÜM deploy'lar "Error" idi. Sebep: `lib/supabase.ts` modül
@@ -187,7 +187,7 @@ DOĞRULANDI: Quiz çözüldü → sonuç tabloya yazıldı (1 record: seviye 7, 
   anahtar kontrolüyle oluşturuyor. Artık anahtarsız da build GEÇİYOR → deploy yeşil.
 - SIRADAKİ (kullanıcı — Vercel Environment Variables): gerçek çalışması için eklenmeli:
   `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` (Supabase için),
-  `OPENAI_API_KEY` (Doğa Hoca metni için). Eklendikten sonra yeniden deploy şart.
+  `GEMINI_API_KEY` (Doğa Hoca metni için). Eklendikten sonra yeniden deploy şart.
 
 ## SON GİT DURUMU
 - `c22a14c OraChess Faza 1` ✅
