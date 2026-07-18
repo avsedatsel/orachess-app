@@ -1,0 +1,26 @@
+{
+  "name": "OraChess — AI Satranç Ustalık Platformu",
+  "short_name": "OraChess",
+  "description": "0'dan 3000 Elo'ya, Doğa Hoca ile AI destekli kişisel satranç eğitimi.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0F0E1A",
+  "theme_color": "#0F0E1A",
+  "lang": "tr",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

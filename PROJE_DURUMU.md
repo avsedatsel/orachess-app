@@ -148,6 +148,19 @@ DOĞRULANDI: Quiz çözüldü → sonuç tabloya yazıldı (1 record: seviye 7, 
 - [~] Müfredat içeriği (Ustalık Piramidi): Level 0 ilk 5 ders entegre edildi ✅
       (lib/lessons-data.ts + dashboard'da listeleniyor); kalan seviyeler bekliyor
 
+## PWA — MOBİL UYGULAMA (TAMAMLANDI ✅)
+- `public/manifest.json`: standalone uygulama (isim, ikon 192/512, tema #0F0E1A).
+- `public/icons/`: PNG ikonlar (marka piyonundan Chromium ile üretildi) + apple-touch-icon.
+- `public/sw.js`: service worker (kurulabilirlik + temel çevrimdışı; ağ öncelikli).
+- `components/pwa/RegisterSW.tsx`: SW kaydı (layout'ta).
+- `components/pwa/InstallButton.tsx`: "Uygulamayı İndir" — Android/Chrome'da yerel kurulum
+  (beforeinstallprompt), iOS'ta "Ana Ekrana Ekle" talimatı; kuruluysa gizlenir.
+- `app/layout.tsx`: manifest + apple-web-app + tema rengi + viewport (viewportFit cover).
+- `app/page.tsx`: ana sayfada "Uygulamayı İndir" butonu.
+- DOĞRULANDI: manifest/sw/ikonlar 200; ana sayfa mobilde (375px) taşmasız, buton görünüyor.
+- NOT: iOS PWA'da beforeinstallprompt yoktur (Apple kısıtı) → talimat gösterilir; bu tüm
+  iOS sürümleri için standart yaklaşımdır.
+
 ## UX/NAV & TAHTA KOORDİNATLARI (TAMAMLANDI ✅)
 - `hooks/useUserLevel.ts`: kullanıcının tespit edilen seviyesi (quiz'de localStorage'a
   yazılır). Oyun sayfası artık mentor'a GERÇEK seviyeyi veriyor (sabit 2 kalktı).
