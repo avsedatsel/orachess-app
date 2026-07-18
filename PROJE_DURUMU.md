@@ -148,6 +148,20 @@ DOĞRULANDI: Quiz çözüldü → sonuç tabloya yazıldı (1 record: seviye 7, 
 - [~] Müfredat içeriği (Ustalık Piramidi): Level 0 ilk 5 ders entegre edildi ✅
       (lib/lessons-data.ts + dashboard'da listeleniyor); kalan seviyeler bekliyor
 
+## ADAPTIVE PERSONALITY CONTROLLER (TAMAMLANDI ✅)
+- `personality.ts` → `getAdaptiveTone(userElo, currentPerformance)`: Elo/performansa göre ton.
+  (0-1600: perf<50→Teşvik Edici, değilse Bilge · 1600-2000: Öğretici · 2000+: Zorlayıcı)
+  `getVoiceParameters(tone)`: ton→ElevenLabs voice_settings (stability/similarityBoost/style).
+  `levelToElo(level)`: seviye(0-11)→yaklaşık Elo (mentor seviye aldığı için köprü).
+- `mentor-api.ts`: her yorumda adaptif ton hesaplanıyor (performans = en iyi hamle bulundu mu:
+  bulduysa 100, saptıysa 40, bilinmiyorsa 60), prompt'a "bu tonda yaz" olarak ekleniyor ve
+  nihai cevabın tonu adaptif tonla eşitleniyor (UI rengi + ses bununla belirlenir).
+- `MentorEngine`: "Sesli dinle" artık `getVoiceParameters(tone)` ile stability/similarityBoost'u
+  ElevenLabs'e otomatik enjekte ediyor.
+- NOT: Oyun sayfasında userLevel şimdilik sabit (2); ileride kullanıcının tespit edilen
+  seviyesine bağlanabilir.
+- DOĞRULANDI: build + Chromium smoke (hamle → mentor tetikleniyor, çökme yok).
+
 ## SOKRATİK ANALİZ MOTORU (TAMAMLANDI ✅)
 - `personality.ts` → `generateSocraticHint(userMove, bestMove, positionEval)`:
   kullanıcı hamlesini motorun en iyi hamlesiyle karşılaştırır; eşitse tebrik +
