@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { LEVEL_DEFINITIONS } from "@/lib/chess-utils";
+import { LessonList } from "@/components/lessons/LessonList";
 
 export default function DashboardPage({
   searchParams,
@@ -60,6 +61,17 @@ export default function DashboardPage({
               {current ? "0" : "12"}
             </p>
           </div>
+        </div>
+
+        {/* Level 0 Müfredat Dersleri */}
+        <div className="mb-10">
+          <h2 className="text-xl font-semibold mb-1">
+            📚 Level 0 — Satranç Okuryazarlığı
+          </h2>
+          <p className="text-sm text-gray-400 mb-4">
+            Satranç Dünyasına İlk Adım · Doğa Hoca ile ilk 5 ders
+          </p>
+          <LessonList />
         </div>
 
         <h2 className="text-xl font-semibold mb-4">
