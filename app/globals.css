@@ -3,12 +3,48 @@
 @tailwind utilities;
 
 body {
-  background-color: #0F0E1A;
+  /* Zarif serif — Windows'ta Book Antiqua, diğerlerinde Palatino/Georgia'ya düşer */
+  font-family: "Book Antiqua", "Palatino Linotype", Palatino, "URW Palladio L",
+    Georgia, serif;
   color: #ffffff;
+  min-height: 100vh;
+
+  /* Yavaşça kayan mor → pembe "galaxy" arka planı */
+  background: linear-gradient(
+    -45deg,
+    #12071f,
+    #2d0a4e,
+    #4c1d95,
+    #831843,
+    #4c1d95,
+    #2d0a4e,
+    #12071f
+  );
+  background-size: 400% 400%;
+  animation: galaxyShift 32s ease infinite;
+}
+
+@keyframes galaxyShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Hareket hassasiyeti olan kullanıcılar için animasyonu durdur */
+@media (prefers-reduced-motion: reduce) {
+  body {
+    animation: none;
+  }
 }
 
 .gradient-text {
-  background: linear-gradient(to right, #D4AF37, #6B21A8);
+  background: linear-gradient(to right, #d4af37, #6b21a8);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
