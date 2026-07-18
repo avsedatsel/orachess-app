@@ -6,15 +6,17 @@ import { MentorEngine } from "@/components/mentor/MentorEngine";
 import { AnalysisPanel } from "@/components/chess/AnalysisPanel";
 import { ActionPanel } from "@/components/game/ActionPanel";
 import { BadgeReward } from "@/components/game/BadgeReward";
+import { PerformanceFeedback } from "@/components/game/PerformanceFeedback";
 import { useStockfish, type StockfishEval } from "@/hooks/useStockfish";
 import { useUserLevel } from "@/hooks/useUserLevel";
+import { useSkillMastery } from "@/hooks/useSkillMastery";
 import { STARTING_FEN, uciToSan } from "@/lib/chess-utils";
 import { getLevelLessons } from "@/lib/lessons-data";
 import {
   orchestrateResponse,
   runSystemIntegrityCheck,
 } from "@/lib/orchestrator";
-import type { MentorResponse } from "@/lib/ai/personality";
+import { levelToElo, type MentorResponse } from "@/lib/ai/personality";
 
 interface LastMove {
   from: string;
@@ -39,6 +41,7 @@ export default function GamePage() {
   const [mentorInput, setMentorInput] = useState<MentorInput | null>(null);
   const { ready, analyzing, evaluation, analyzedFen, analyze } = useStockfish();
   const userLevel = useUserLevel(); // kullanıcının tespit edilen seviyesi (yoksa 0)
+  const { lastMetrics, recordMove } = useSkillMastery();
 
   // Etkileşim durumları
   const [askSignal, setAskSignal] = useState(0);
@@ -74,6 +77,12 @@ export default function GamePage() {
     analyzedFenRef.current = analyzedFen;
   }, [analyzedFen]);
 
+  // Düşünme süresi: pozisyon önüne konduğu andan hamleye kadar geçen saniye.
+  const positionShownAtRef = useRef<number>(Date.now());
+  useEffect(() => {
+    positionShownAtRef.current = Date.now();
+  }, [currentFen]);
+
   const handleMove = (from: string, to: string, san: string, fen: string) => {
     // Hamle yapılan pozisyon (currentFen), analizde bunun en iyi hamlesi hazırsa yakala
     const movedFrom = lastMove?.fen ?? STARTING_FEN;
@@ -81,6 +90,12 @@ export default function GamePage() {
     const bestUci =
       ev && analyzedFenRef.current === movedFrom ? ev.bestMove : null;
     const bestBefore = bestUci ? uciToSan(movedFrom, bestUci) : null;
+
+    // Bilişsel geri bildirim: en iyi hamle biliniyorsa metrikleri kaydet.
+    if (bestBefore) {
+      const timeTaken = (Date.now() - positionShownAtRef.current) / 1000;
+      recordMove(san, bestBefore, timeTaken, levelToElo(userLevel));
+    }
 
     setLastMove((prev) => ({
       from,
@@ -177,6 +192,9 @@ export default function GamePage() {
 
           {/* SÜTUN 3 — Aksiyon */}
           <div className="order-3 w-full lg:flex-1 lg:min-w-0 space-y-4">
+            {/* Hamle sonrası bilişsel geri bildirim */}
+            <PerformanceFeedback metrics={lastMetrics} />
+
             <ActionPanel
               lifeSkill={lifeSkill}
               lifeNote={lifeNote}

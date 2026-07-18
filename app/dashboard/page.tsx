@@ -1,6 +1,7 @@
 import { LEVEL_DEFINITIONS } from "@/lib/chess-utils";
 import { DailyInsightCard } from "@/components/insight/DailyInsightCard";
 import { PyramidPath } from "@/components/dashboard/PyramidPath";
+import { SkillMasteryChart } from "@/components/dashboard/SkillMasteryChart";
 
 export default function DashboardPage({
   searchParams,
@@ -27,6 +28,9 @@ export default function DashboardPage({
 
         {/* Günün Odak Noktası (Daily Insight) — sayfanın üstünde */}
         <DailyInsightCard />
+
+        {/* Gelişim Çizelgesi — Satranç Bilgisi + Stratejik Düşünme */}
+        <SkillMasteryChart />
 
         {/* Sınavdan yeni gelindiyse karşılama mesajı */}
         {current && (
