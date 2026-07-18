@@ -66,7 +66,8 @@ export async function analyzeMoveWithMentor(params: {
     if (!res.ok) {
       const detail = await res.text().catch(() => "");
       console.error("Gemini API Error:", res.status, detail);
-      return { error: "Mentor konsültasyonu sırasında bir hata oluştu." };
+      // GEÇİCİ TEŞHİS: gerçek hatayı arayüzde göster (sorun çözülünce sadeleştirilecek)
+      return { error: `Gemini hatası (${res.status}): ${detail.slice(0, 300)}` };
     }
 
     const data = await res.json();
@@ -75,7 +76,12 @@ export async function analyzeMoveWithMentor(params: {
     return parseAndStructureMentorResponse(mentorText, params);
   } catch (error) {
     console.error("Mentor API Error:", error);
-    return { error: "Mentor konsültasyonu sırasında bir hata oluştu." };
+    // GEÇİCİ TEŞHİS: gerçek hatayı arayüzde göster
+    return {
+      error: `Mentor bağlantı hatası: ${
+        error instanceof Error ? error.message : String(error)
+      }`,
+    };
   }
 }
 
