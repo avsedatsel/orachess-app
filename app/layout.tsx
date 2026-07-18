@@ -3,6 +3,7 @@ import "./globals.css";
 import { AuthProvider } from "@/lib/auth-context";
 import { TopBar } from "@/components/nav/TopBar";
 import { RegisterSW } from "@/components/pwa/RegisterSW";
+import { Footer } from "@/components/legal/Footer";
 
 export const metadata: Metadata = {
   title: "OraChess - AI Satranç Ustalık Platformu",
@@ -39,6 +40,7 @@ export default function RootLayout({
         <AuthProvider>
           <TopBar />
           {children}
+          <Footer />
         </AuthProvider>
       </body>
     </html>
