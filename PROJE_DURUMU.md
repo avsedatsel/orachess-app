@@ -148,6 +148,16 @@ DOĞRULANDI: Quiz çözüldü → sonuç tabloya yazıldı (1 record: seviye 7, 
 - [~] Müfredat içeriği (Ustalık Piramidi): Level 0 ilk 5 ders entegre edildi ✅
       (lib/lessons-data.ts + dashboard'da listeleniyor); kalan seviyeler bekliyor
 
+## UX/NAV & TAHTA KOORDİNATLARI (TAMAMLANDI ✅)
+- `hooks/useUserLevel.ts`: kullanıcının tespit edilen seviyesi (quiz'de localStorage'a
+  yazılır). Oyun sayfası artık mentor'a GERÇEK seviyeyi veriyor (sabit 2 kalktı).
+- `components/nav/TopBar.tsx`: her sayfada sabit üst çubuk — solda Geri/İleri/Home,
+  sağda giriş durumu. Eski AuthNav + dağınık "← Ana Sayfa" linkleri kaldırıldı.
+  İç sayfalar üst çubuğun altından başlar (çakışma yok); quiz yapışkan başlığı top-14.
+- `ChessBoard`: koordinatlar eklendi — rakamlar (1-8) sol sütunda, harfler (a-h) alt
+  satırda, standart yönelim (soldan sağa a-h, aşağıdan yukarıya 1-8), karenin zıt rengiyle.
+- DOĞRULANDI: 375px'de yatay taşma yok; koordinatlar + üst çubuk görünüyor, çakışma yok.
+
 ## ADAPTIVE PERSONALITY CONTROLLER (TAMAMLANDI ✅)
 - `personality.ts` → `getAdaptiveTone(userElo, currentPerformance)`: Elo/performansa göre ton.
   (0-1600: perf<50→Teşvik Edici, değilse Bilge · 1600-2000: Öğretici · 2000+: Zorlayıcı)

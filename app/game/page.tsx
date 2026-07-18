@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import Link from "next/link";
 import { ChessBoard } from "@/components/chess/ChessBoard";
 import { MentorEngine } from "@/components/mentor/MentorEngine";
 import { AnalysisPanel } from "@/components/chess/AnalysisPanel";
 import { useStockfish, type StockfishEval } from "@/hooks/useStockfish";
+import { useUserLevel } from "@/hooks/useUserLevel";
 import { STARTING_FEN, uciToSan } from "@/lib/chess-utils";
 
 interface LastMove {
@@ -30,6 +30,7 @@ export default function GamePage() {
   const [lastMove, setLastMove] = useState<LastMove | null>(null);
   const [mentorInput, setMentorInput] = useState<MentorInput | null>(null);
   const { ready, analyzing, evaluation, analyzedFen, analyze } = useStockfish();
+  const userLevel = useUserLevel(); // kullanıcının tespit edilen seviyesi (yoksa 0)
 
   const currentFen = lastMove?.fen ?? STARTING_FEN;
 
@@ -86,11 +87,8 @@ export default function GamePage() {
   return (
     <main className="min-h-screen p-6 pt-20">
       <div className="max-w-6xl mx-auto">
-        <div className="flex items-center justify-between mb-6">
+        <div className="mb-6">
           <h1 className="text-3xl font-bold gradient-text">OraChess Oyun</h1>
-          <Link href="/" className="text-ora-gold hover:underline text-sm">
-            ← Ana Sayfa
-          </Link>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-6">
@@ -109,7 +107,7 @@ export default function GamePage() {
             <div className="bg-ora-slate/50 rounded-lg p-4 border border-gray-800">
               {mentorInput ? (
                 <MentorEngine
-                  userLevel={2}
+                  userLevel={userLevel}
                   previousFen={mentorInput.previousFen}
                   currentFen={mentorInput.currentFen}
                   move={mentorInput.move}

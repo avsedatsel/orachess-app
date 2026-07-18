@@ -102,6 +102,12 @@ export function QuizEngine() {
         result: quizResult,
         detectedLevel: detected,
       });
+      // Tespit edilen seviyeyi kaydet (oyun/mentor bunu kullanır)
+      try {
+        localStorage.setItem("orachess_level", String(detected.level));
+      } catch {
+        // localStorage erişilemezse sorun değil
+      }
       // Sonucu veritabanina kaydet
       sonucuKaydet(quizResult, detected);
     } else {

@@ -87,6 +87,24 @@ export const ChessBoard: React.FC<ChessBoardProps> = ({ onMove }) => {
                 {isTarget && piece && (
                   <div className="absolute inset-0 ring-4 ring-inset ring-black/30" />
                 )}
+
+                {/* Koordinatlar: rakamlar (1-8) sol sütunda, harfler (a-h) alt satırda */}
+                {file === "a" && (
+                  <span
+                    className="absolute top-0.5 left-0.5 text-[9px] sm:text-[11px] font-bold leading-none pointer-events-none select-none"
+                    style={{ color: isLight ? BOARD_DARK : BOARD_LIGHT }}
+                  >
+                    {rank}
+                  </span>
+                )}
+                {rank === 1 && (
+                  <span
+                    className="absolute bottom-0.5 right-1 text-[9px] sm:text-[11px] font-bold leading-none pointer-events-none select-none"
+                    style={{ color: isLight ? BOARD_DARK : BOARD_LIGHT }}
+                  >
+                    {file}
+                  </span>
+                )}
               </div>
             );
           })}
