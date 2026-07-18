@@ -1,5 +1,6 @@
 import { LEVEL_DEFINITIONS } from "@/lib/chess-utils";
 import { LessonList } from "@/components/lessons/LessonList";
+import { DailyInsightCard } from "@/components/insight/DailyInsightCard";
 
 export default function DashboardPage({
   searchParams,
@@ -20,6 +21,9 @@ export default function DashboardPage({
         <div className="mb-8">
           <h1 className="text-3xl font-bold gradient-text">Kontrol Paneli</h1>
         </div>
+
+        {/* Günün Odak Noktası (Daily Insight) */}
+        <DailyInsightCard />
 
         {/* Sınavdan yeni gelindiyse karşılama mesajı */}
         {current && (
@@ -60,7 +64,7 @@ export default function DashboardPage({
         </div>
 
         {/* Level 0 Müfredat Dersleri */}
-        <div className="mb-10">
+        <div id="level0-dersler" className="mb-10 scroll-mt-20">
           <h2 className="text-xl font-semibold mb-1">
             📚 Level 0 — Satranç Okuryazarlığı
           </h2>

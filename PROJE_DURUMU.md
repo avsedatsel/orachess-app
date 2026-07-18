@@ -148,6 +148,16 @@ DOĞRULANDI: Quiz çözüldü → sonuç tabloya yazıldı (1 record: seviye 7, 
 - [~] Müfredat içeriği (Ustalık Piramidi): Level 0 ilk 5 ders entegre edildi ✅
       (lib/lessons-data.ts + dashboard'da listeleniyor); kalan seviyeler bekliyor
 
+## DAILY INSIGHT & RETENTION (TAMAMLANDI ✅)
+- `lib/daily-insight.ts`: `generateDailyInsight(userHistory, userElo)` — son performansa göre
+  "Günün Odak Noktası" üretir (accuracy → bizde `yuzde`; boş geçmişte sınava yönlendirir).
+- `components/insight/DailyInsightCard.tsx`: dashboard kartı; kullanıcının Supabase
+  quiz_sonuclari geçmişini (Gelişim Çizelgesi ile AYNI kaynak) çekip dinamik mesaj + "Hemen Başla".
+- `app/dashboard/page.tsx`: kart üstte; ders bölümüne `id="level0-dersler"` çıpası.
+- NOT: Önerilen ders id'leri (L0-D12/L0-D25) müfredatta HENÜZ yok (şu an D1-D5) →
+  "Hemen Başla" ders bölümüne kaydırır (güvenli fallback). Dersler eklenince direkt bağlanır.
+- Gelişim Çizelgesi ile senkron: ikisi de aynı quiz_sonuclari verisini okur.
+
 ## YASAL SAYFALAR & FOOTER (TAMAMLANDI ✅ — hukuki inceleme bekliyor)
 - `components/legal/Footer.tsx`: her sayfada footer (© + yasal linkler).
 - `app/kullanim-sartlari`, `app/gizlilik` (KVKK aydınlatma metni), `app/cerez-politikasi`:
