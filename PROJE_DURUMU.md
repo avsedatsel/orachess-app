@@ -177,6 +177,18 @@ DOĞRULANDI: Quiz çözüldü → sonuç tabloya yazıldı (1 record: seviye 7, 
     "e5" (+0.32) olarak değerlendirdi. NOT: Doğa Hoca'nın metin üretmesi için Vercel'de
     `OPENAI_API_KEY` env değişkeni TANIMLI OLMALI; yoksa mentor hata verir (Stockfish etkilenmez).
 
+## KRİTİK DEPLOY DÜZELTMESİ (ÇÖZÜLDÜ ✅)
+- SORUN: Vercel'deki TÜM deploy'lar "Error" idi. Sebep: `lib/supabase.ts` modül
+  yüklenirken `createClient(url!, key!)` çağırıyordu; env yoksa "supabaseUrl is required"
+  fırlatıp prerender/build'i çökertiyordu. AuthProvider kök layout'ta olduğundan TÜM
+  sayfalar etkileniyordu.
+- ÇÖZÜM: `lib/supabase.ts` env yoksa güvenli placeholder kullanıyor (+`isSupabaseConfigured`).
+  `lib/ai/mentor-api.ts` OpenAI istemcisini modül yüklenirken değil, fonksiyon içinde
+  anahtar kontrolüyle oluşturuyor. Artık anahtarsız da build GEÇİYOR → deploy yeşil.
+- SIRADAKİ (kullanıcı — Vercel Environment Variables): gerçek çalışması için eklenmeli:
+  `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` (Supabase için),
+  `OPENAI_API_KEY` (Doğa Hoca metni için). Eklendikten sonra yeniden deploy şart.
+
 ## SON GİT DURUMU
 - `c22a14c OraChess Faza 1` ✅
 - `144a4d7 Faza 2: Supabase veritabani baglantisi` ✅

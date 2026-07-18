@@ -9,10 +9,6 @@ import {
   FeedbackCategory,
 } from "./personality";
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-
 export async function analyzeMoveWithMentor(params: {
   userLevel: number;
   previousFen: string;
@@ -27,6 +23,16 @@ export async function analyzeMoveWithMentor(params: {
     if (!params.move || !params.moveNotation) {
       return { error: "Invalid move data" };
     }
+
+    // OpenAI istemcisini burada oluştur (modül yüklenirken değil) ve anahtarı kontrol et.
+    // Böylece anahtar yoksa build/çalışma zamanı çökmez, net bir hata döner.
+    if (!process.env.OPENAI_API_KEY) {
+      return {
+        error:
+          "Doğa Hoca şu an yapılandırılmadı (OPENAI_API_KEY eksik). Vercel ayarlarından eklenmeli.",
+      };
+    }
+    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
     const mentorPrompt = buildMentorPrompt(params);
     const systemPrompt = getLevelAdjustedPrompt(params.userLevel);
