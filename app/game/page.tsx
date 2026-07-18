@@ -1,12 +1,15 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { ChessBoard } from "@/components/chess/ChessBoard";
 import { MentorEngine } from "@/components/mentor/MentorEngine";
 import { AnalysisPanel } from "@/components/chess/AnalysisPanel";
+import { ActionPanel } from "@/components/game/ActionPanel";
+import { BadgeReward } from "@/components/game/BadgeReward";
 import { useStockfish, type StockfishEval } from "@/hooks/useStockfish";
 import { useUserLevel } from "@/hooks/useUserLevel";
 import { STARTING_FEN, uciToSan } from "@/lib/chess-utils";
+import { getLevelLessons } from "@/lib/lessons-data";
 import {
   orchestrateResponse,
   runSystemIntegrityCheck,
@@ -37,7 +40,29 @@ export default function GamePage() {
   const { ready, analyzing, evaluation, analyzedFen, analyze } = useStockfish();
   const userLevel = useUserLevel(); // kullanıcının tespit edilen seviyesi (yoksa 0)
 
+  // Etkileşim durumları
+  const [askSignal, setAskSignal] = useState(0);
+  const [asking, setAsking] = useState(false);
+  const [analysisOpen, setAnalysisOpen] = useState(false);
+  const [badgeOpen, setBadgeOpen] = useState(false);
+
   const currentFen = lastMove?.fen ?? STARTING_FEN;
+
+  // Bu seviyenin "hayat dersi" bağlamı (Action sütunu + rozet için)
+  const lesson = useMemo(() => getLevelLessons(userLevel)[0], [userLevel]);
+  const lifeSkill = lesson?.lifeConcept ?? "Odaklanma";
+  const lifeNote =
+    lesson?.content ??
+    "Her hamle bir seçim, her seçim bir sorumluluk. Sabırlı ol, tahtayı oku.";
+  const tasks = useMemo(
+    () => [
+      "Bir taş oyna, Doğa Hoca'nın yorumunu al",
+      "Analiz Modu'nu açıp motorun değerlendirmesini incele",
+      "Doğa Hoca'ya Sor ile bir soru daha sor",
+      "Modülü bitirip hayat becerini kazan",
+    ],
+    []
+  );
 
   // Hamle anında "o pozisyonun en iyi hamlesi"ni yakalamak için son analizi izle
   const latestEvalRef = useRef<StockfishEval | null>(null);
@@ -74,21 +99,21 @@ export default function GamePage() {
 
   // "Head Coach" birleştirme katmanı: Doğa Hoca'nın pedagojik yanıtı hazır
   // olduğunda, Stockfish'in son teknik değerlendirmesiyle TEK pakette birleştir.
-  const handleMentorResponse = useCallback((response: MentorResponse) => {
-    // Bütünlük kontrolü: pedagojik + teknik akış eşzamanlı hazır mı?
-    runSystemIntegrityCheck({
-      mentorApi: response,
-      personality: { currentTone: response.tone },
-      dashboard: { insightCard: true },
-      engine: { status: ready ? "ready" : "loading" },
-    });
-
-    const combined = orchestrateResponse(latestEvalRef.current, response);
-    console.log("[OraChess Head Coach] Birleşik yanıt:", combined);
-  }, [ready]);
+  const handleMentorResponse = useCallback(
+    (response: MentorResponse) => {
+      runSystemIntegrityCheck({
+        mentorApi: response,
+        personality: { currentTone: response.tone },
+        dashboard: { insightCard: true },
+        engine: { status: ready ? "ready" : "loading" },
+      });
+      const combined = orchestrateResponse(latestEvalRef.current, response);
+      console.log("[OraChess Head Coach] Birleşik yanıt:", combined);
+    },
+    [ready]
+  );
 
   // Analiz TAMAMLANINCA (skor kesinleşince) Doğa Hoca'ya gönderilecek girdiyi hazırla.
-  // analyzedFen === currentFen kontrolü, skorun bu hamleye ait olmasını garantiler.
   useEffect(() => {
     if (!lastMove) return;
     if (analyzing) return;
@@ -105,50 +130,83 @@ export default function GamePage() {
   }, [lastMove, analyzing, evaluation, analyzedFen]);
 
   return (
-    <main className="min-h-screen p-6 pt-20">
-      <div className="max-w-6xl mx-auto">
+    <main className="min-h-screen px-4 sm:px-6 pb-6 pt-20">
+      <div className="max-w-7xl mx-auto">
         <div className="mb-6">
-          <h1 className="text-3xl font-bold gradient-text">OraChess Oyun</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold gradient-text">
+            OraChess Ders Ekranı
+          </h1>
+          <p className="text-sm text-gray-400 mt-1">
+            Doğa Hoca ile antrenman · Hayat becerisi: {lifeSkill}
+          </p>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 flex justify-center">
+        {/* 3 Sütun: Mentor (sol) · Tahta (merkez) · Aksiyon (sağ)
+            Mobilde sıralama: Tahta → Mentor → Aksiyon */}
+        <div className="flex flex-col lg:flex-row gap-6 lg:items-start">
+          {/* SÜTUN 1 — Mentor (kaydırılabilir) */}
+          <div className="order-2 lg:order-1 w-full lg:flex-1 lg:min-w-0 lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto bg-ora-slate/50 rounded-lg p-4 border border-gray-800">
+            {mentorInput ? (
+              <MentorEngine
+                userLevel={userLevel}
+                previousFen={mentorInput.previousFen}
+                currentFen={mentorInput.currentFen}
+                move={mentorInput.move}
+                moveNotation={mentorInput.moveNotation}
+                stockfishEvaluation={mentorInput.stockfishEvaluation}
+                bestMove={mentorInput.bestMove}
+                onResponse={handleMentorResponse}
+                askSignal={askSignal}
+                onLoadingChange={setAsking}
+              />
+            ) : (
+              <div className="text-center py-8">
+                <p className="text-gray-400 text-sm">
+                  {lastMove
+                    ? "Doğa Hoca, motorun değerlendirmesini bekliyor…"
+                    : "Bir taş oyna, Doğa Hoca yorumlasın 🎯"}
+                </p>
+              </div>
+            )}
+          </div>
+
+          {/* SÜTUN 2 — Tahta (merkez) */}
+          <div className="order-1 lg:order-2 w-full lg:w-auto shrink-0 flex justify-center">
             <ChessBoard onMove={handleMove} />
           </div>
 
-          <div className="lg:col-span-1 space-y-6">
-            <AnalysisPanel
-              fen={currentFen}
-              evaluation={evaluation}
-              ready={ready}
-              analyzing={analyzing}
+          {/* SÜTUN 3 — Aksiyon */}
+          <div className="order-3 w-full lg:flex-1 lg:min-w-0 space-y-4">
+            <ActionPanel
+              lifeSkill={lifeSkill}
+              lifeNote={lifeNote}
+              tasks={tasks}
+              canAsk={!!mentorInput}
+              asking={asking}
+              onAsk={() => setAskSignal((n) => n + 1)}
+              analysisOpen={analysisOpen}
+              onToggleAnalysis={() => setAnalysisOpen((v) => !v)}
+              onFinishModule={() => setBadgeOpen(true)}
             />
 
-            <div className="bg-ora-slate/50 rounded-lg p-4 border border-gray-800">
-              {mentorInput ? (
-                <MentorEngine
-                  userLevel={userLevel}
-                  previousFen={mentorInput.previousFen}
-                  currentFen={mentorInput.currentFen}
-                  move={mentorInput.move}
-                  moveNotation={mentorInput.moveNotation}
-                  stockfishEvaluation={mentorInput.stockfishEvaluation}
-                  bestMove={mentorInput.bestMove}
-                  onResponse={handleMentorResponse}
-                />
-              ) : (
-                <div className="text-center py-8">
-                  <p className="text-gray-400 text-sm">
-                    {lastMove
-                      ? "Doğa Hoca, motorun değerlendirmesini bekliyor…"
-                      : "Bir taş oynayın, Doğa Hoca yorumlasın 🎯"}
-                  </p>
-                </div>
-              )}
-            </div>
+            {analysisOpen && (
+              <AnalysisPanel
+                fen={currentFen}
+                evaluation={evaluation}
+                ready={ready}
+                analyzing={analyzing}
+              />
+            )}
           </div>
         </div>
       </div>
+
+      {/* "Modül Bitir" → Hayat Becerisi rozeti */}
+      <BadgeReward
+        open={badgeOpen}
+        skill={lifeSkill}
+        onClose={() => setBadgeOpen(false)}
+      />
     </main>
   );
 }
