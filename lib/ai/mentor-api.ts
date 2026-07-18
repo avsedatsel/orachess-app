@@ -42,11 +42,16 @@ export async function analyzeMoveWithMentor(params: {
     const mentorPrompt = buildMentorPrompt(params);
     const systemPrompt = getLevelAdjustedPrompt(params.userLevel);
 
-    // Gemini REST API (SDK bağımlılığı yok)
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${MENTOR_CONFIG.model}:generateContent?key=${apiKey}`;
+    // Gemini REST API (SDK bağımlılığı yok).
+    // Anahtar, URL yerine `x-goog-api-key` başlığında gönderilir — hem eski (AIza...)
+    // hem yeni (AQ...) anahtar formatlarıyla uyumlu ve daha güvenli (anahtar URL/loglara sızmaz).
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${MENTOR_CONFIG.model}:generateContent`;
     const res = await fetch(url, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "x-goog-api-key": apiKey,
+      },
       body: JSON.stringify({
         systemInstruction: { parts: [{ text: systemPrompt }] },
         contents: [{ role: "user", parts: [{ text: mentorPrompt }] }],
