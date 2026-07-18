@@ -24,6 +24,10 @@ interface MentorEngineProps {
   isOpen?: boolean;
   /** Mentor yanıtı hazır olduğunda üst katmana (orchestrator) iletir. */
   onResponse?: (response: MentorResponse) => void;
+  /** Değeri arttıkça "Doğa Hoca'ya Sor" gibi yeniden sorgu tetikler. */
+  askSignal?: number;
+  /** Yükleniyor durumunu üst katmana bildirir (aksiyon butonu için). */
+  onLoadingChange?: (loading: boolean) => void;
 }
 
 export const MentorEngine: React.FC<MentorEngineProps> = ({
@@ -37,6 +41,8 @@ export const MentorEngine: React.FC<MentorEngineProps> = ({
   bestMove,
   isOpen = true,
   onResponse,
+  askSignal,
+  onLoadingChange,
 }) => {
   const [response, setResponse] = useState<MentorResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -84,6 +90,20 @@ export const MentorEngine: React.FC<MentorEngineProps> = ({
       fetchMentorResponse();
     }
   }, [move, isOpen, fetchMentorResponse]);
+
+  // Manuel "Doğa Hoca'ya Sor": askSignal her arttığında yeniden sorgula.
+  const oncekiSignal = React.useRef(askSignal);
+  useEffect(() => {
+    if (askSignal === undefined) return;
+    if (oncekiSignal.current === askSignal) return;
+    oncekiSignal.current = askSignal;
+    if (isOpen && move) fetchMentorResponse();
+  }, [askSignal, isOpen, move, fetchMentorResponse]);
+
+  // Yükleniyor durumunu üst katmana ilet.
+  useEffect(() => {
+    onLoadingChange?.(isLoading);
+  }, [isLoading, onLoadingChange]);
 
   // Doğa Hoca'nın yorumunu ElevenLabs ile seslendir ve çal
   const seslendir = useCallback(async () => {
