@@ -27,7 +27,7 @@ export default function GamePage() {
   };
 
   return (
-    <main className="min-h-screen p-6">
+    <main className="min-h-screen p-6 pt-20">
       <div className="max-w-6xl mx-auto">
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-3xl font-bold gradient-text">OraChess Oyun</h1>
