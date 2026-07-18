@@ -17,6 +17,7 @@ interface MentorEngineProps {
   move: string;
   moveNotation: string;
   alternativeMoves?: string[];
+  stockfishEvaluation?: number;
   isOpen?: boolean;
 }
 
@@ -27,6 +28,7 @@ export const MentorEngine: React.FC<MentorEngineProps> = ({
   move,
   moveNotation,
   alternativeMoves,
+  stockfishEvaluation,
   isOpen = true,
 }) => {
   const [response, setResponse] = useState<MentorResponse | null>(null);
@@ -47,6 +49,7 @@ export const MentorEngine: React.FC<MentorEngineProps> = ({
         move,
         moveNotation,
         alternativeMoves,
+        stockfishEvaluation,
       });
 
       if ("error" in result) {
@@ -59,7 +62,7 @@ export const MentorEngine: React.FC<MentorEngineProps> = ({
     } finally {
       setIsLoading(false);
     }
-  }, [userLevel, previousFen, currentFen, move, moveNotation, alternativeMoves, isOpen]);
+  }, [userLevel, previousFen, currentFen, move, moveNotation, alternativeMoves, stockfishEvaluation, isOpen]);
 
   useEffect(() => {
     if (isOpen && move) {

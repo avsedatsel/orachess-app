@@ -155,6 +155,15 @@ DOĞRULANDI: Quiz çözüldü → sonuç tabloya yazıldı (1 record: seviye 7, 
 - `components/chess/AnalysisPanel.tsx`: değerlendirme çubuğu + skor + en iyi hamle (SAN).
 - `app/game/page.tsx`: analiz paneli, oynanan pozisyonu otomatik değerlendirir.
 - DOĞRULANDI: Chromium'da test edildi — başlangıç pozisyonunda "e4" (+0.37) döndü.
+- MENTOR BAĞLANTISI: Stockfish değerlendirmesi artık Doğa Hoca'ya besleniyor.
+  - `hooks/useStockfish.ts` `analyzedFen` döner (skorun hangi pozisyona ait olduğunu bilmek için).
+  - `app/game/page.tsx` tek worker'ı yönetir; analiz TAMAMLANINCA (analyzedFen === currentFen)
+    skoru `MentorEngine`'e `stockfishEvaluation` olarak geçirir → hamle başına tek OpenAI çağrısı.
+  - `components/chess/AnalysisPanel.tsx` artık sunum bileşeni (değerlendirmeyi prop alır).
+  - `mentor-api.ts` zaten `stockfishEvaluation` parametresini prompt'a ekliyordu.
+  - DOĞRULANDI: e2-e4 sonrası mentor tetiklendi (tek POST); Stockfish yeni pozisyonu
+    "e5" (+0.32) olarak değerlendirdi. NOT: Doğa Hoca'nın metin üretmesi için Vercel'de
+    `OPENAI_API_KEY` env değişkeni TANIMLI OLMALI; yoksa mentor hata verir (Stockfish etkilenmez).
 
 ## SON GİT DURUMU
 - `c22a14c OraChess Faza 1` ✅
