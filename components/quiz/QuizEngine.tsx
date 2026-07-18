@@ -1,9 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { quizQuestions } from "@/lib/quiz-data";
 import { supabase } from "@/lib/supabase";
+import { useAuth } from "@/lib/auth-context";
 import {
   calculateLevel,
   generateLevelSummary,
@@ -25,6 +27,8 @@ interface QuizState {
 }
 
 export function QuizEngine() {
+  const { user } = useAuth();
+  const router = useRouter();
   const [state, setState] = useState<QuizState>({
     currentQuestionIndex: 0,
     answers: [],
@@ -58,6 +62,8 @@ export function QuizEngine() {
         dogru_sayisi: result.correctAnswers,
         toplam_soru: result.totalQuestions,
         yuzde: detected.percentage,
+        // Giriş yapıldıysa sonucu kullanıcıya bağla (anonimse bu alan gönderilmez)
+        ...(user ? { user_id: user.id } : {}),
       });
       if (error) {
         console.error("Kayit hatasi:", error);
@@ -247,7 +253,7 @@ export function QuizEngine() {
             <button onClick={handleRestart} className="flex-1 bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-4 rounded-lg">
               Sınavı Tekrar Yap
             </button>
-            <button onClick={() => alert("Eğitime başlıyorsun!")} className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-3 px-4 rounded-lg">
+            <button onClick={() => router.push(`/dashboard?seviye=${state.detectedLevel!.level}`)} className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-3 px-4 rounded-lg">
               Eğitime Başla
             </button>
           </div>
