@@ -15,7 +15,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="tr">
-      <body className="bg-ora-dark text-white min-h-screen antialiased">
+      <body className="text-white min-h-screen antialiased">
         <AuthProvider>
           <AuthNav />
           {children}
