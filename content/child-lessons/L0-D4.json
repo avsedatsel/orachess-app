@@ -1,0 +1,121 @@
+{
+  "id": "L0-D4",
+  "blok": 1,
+  "dersNo": 4,
+  "baslik": "Çapraz Giden Şık Dost: Fil",
+  "yasBecerisi": "Farklı Bakış",
+  "hedefDakika": 45,
+  "duraklar": [
+    {
+      "no": 1,
+      "baslik": "Selam! Bugün Herkesten Farklı Bir Dost",
+      "kesif": "Selaaam! Dün kale hep dosdoğru gidiyordu, hatırladın mı? Bugünkü dostumuz bambaşka: fil! O herkes düz giderken çapraz gider, kendi yolundan. Hadi evini bulalım.",
+      "piyoncuk": "Fil çok şık bir dost! Herkesten farklı yürür, ama işte bu yüzden özeldir.",
+      "gorev": {
+        "tur": "isik-yak",
+        "yonerge": "Filimiz 'c1' odasında uyuyor. Oraya dokunup onu uyandıralım mı?",
+        "hedefKare": "c1",
+        "kesifIpuclari": [
+          "c kapısı soldan üçüncü kapı, 1. kat en alt. Birlikte bulalım.",
+          "Soldan say: a, b, c! İşte c1."
+        ],
+        "kutlama": "Uyandı! Şık filimiz merhaba diyor."
+      }
+    },
+    {
+      "no": 2,
+      "baslik": "Fil Hep Çapraz Gider",
+      "kesif": "Filin sırrı şu: asla düz gitmez, hep çapraz! Yani köşe köşe, eğik bir çizgide. Herkes düz giderken o kendi farklı yolunu bulur. Hadi çapraz gönderelim.",
+      "gorev": {
+        "tur": "hamle",
+        "yonerge": "Fili çapraz yukarı, ta h6 odasına kadar gönder. Önce file, sonra h6'ya dokun.",
+        "fen": "4k3/8/8/8/8/8/8/2B1K3 w - - 0 1",
+        "dogruHamleSan": "Bh6",
+        "kabulEdilen": ["Bg5", "Bf4"],
+        "kesifIpuclari": [
+          "Fil çapraz gider. Sağ yukarı doğru köşe köşe çıkmayı dene.",
+          "c1'den çapraz say: d2, e3, f4, g5, h6! İşte oraya."
+        ],
+        "kutlama": "Vaaay, nasıl da şık kaydı! Fil çaprazın ustası."
+      }
+    },
+    {
+      "no": 3,
+      "baslik": "Diğer Çapraz",
+      "kesif": "Fil bir tarafa değil, çaprazın her iki yönüne de gider. Hadi bu sefer diğer tarafa, sol yukarı çaprazına gönderelim.",
+      "gorev": {
+        "tur": "hamle",
+        "yonerge": "Fili sol yukarı çaprazına, a3 odasına gönder.",
+        "fen": "4k3/8/8/8/8/8/8/2B1K3 w - - 0 1",
+        "dogruHamleSan": "Ba3",
+        "kabulEdilen": ["Bb2"],
+        "kesifIpuclari": [
+          "Bu sefer sol yukarı çaprazı deneyelim.",
+          "c1'den sola çapraz: b2, a3! İşte oraya."
+        ],
+        "kutlama": "Süper! İki yöne de çapraz gidebiliyor, gördün mü?"
+      }
+    },
+    {
+      "no": 4,
+      "baslik": "Piyoncuk'a Anlatıyoruz",
+      "kesif": "Piyoncuk filin düz gidebileceğini sanıyor. Ama sen biliyorsun ki fil hep çapraz gider. Hadi ona göster!",
+      "piyoncuk": "Fil düz de gidebiliyor mu? Ben şaşırdım... bana çapraz gittiğini gösterir misin?",
+      "gorev": {
+        "tur": "rol-degistir",
+        "yonerge": "Piyoncuk'a filin çapraz gittiğini göster: fili c1'den çapraz f4 odasına gönder.",
+        "fen": "4k3/8/8/8/8/8/8/2B1K3 w - - 0 1",
+        "dogruHamleSan": "Bf4",
+        "kesifIpuclari": [
+          "Sen biliyorsun: fil hep çapraz. Sağ yukarı köşe köşe git.",
+          "c1'den çapraz: d2, e3, f4!"
+        ],
+        "kutlama": "Piyoncuk anladı! 'Demek herkesten farklı, kendi yolundan gidiyor!' diyor."
+      }
+    },
+    {
+      "no": 5,
+      "baslik": "Filin Renk Sırrı",
+      "kesif": "Filin çok tatlı bir sırrı var: bir fil hep aynı renk odalarda gezer! Açık odada başlarsa, hep açık odalarda kalır. Hadi bunu birlikte keşfedelim.",
+      "gorev": {
+        "tur": "secim",
+        "yonerge": "Sence bir fil, gezerken odaların rengini değiştirebilir mi? 'Hayır, hep aynı renkte kalır' diyorsan Piyoncuk'a başparmak göster!",
+        "kesifIpuclari": [
+          "Çapraz gidince hep aynı renk odaya varırsın; dene, göreceksin!"
+        ],
+        "kutlama": "Aynen öyle! Fil hep aynı renkte kalır. Ne keskin gözlerin var."
+      }
+    },
+    {
+      "no": 6,
+      "baslik": "Farklı Bir Gün",
+      "kesif": "Bugün fili tanıdık: herkes düz giderken çapraz giden, kendi yolunu bulan şık bir dost. Sen de bugün farklı bakmayı öğrendin — bir işi arkadaşından başka bir yoldan çözmek de çok güzeldir.",
+      "piyoncuk": "Bugün çok eğlendim! Yarın en yaramaz ama en akıllı dostu, zıplayan atı tanıyacağız!",
+      "gorev": {
+        "tur": "secim",
+        "yonerge": "Piyoncuk soruyor: yarın atı tanırken önce onun nasıl zıpladığını mı, yoksa nereye zıpladığını mı öğrenelim? Sen seç!",
+        "kesifIpuclari": [
+          "Hangisini seçersen yarın oradan başlarız. Karar senin!"
+        ],
+        "kutlama": "Harika seçim! Piyoncuk çoktan heyecanlandı."
+      }
+    }
+  ],
+  "vakaDosyasi": {
+    "gunlukHayat": "Bir yapbozu arkadaşın bir türlü çözemezken, sen başka bir köşeden başlayıp çözersin.",
+    "satrancBaglantisi": "Fil de herkes düz giderken çapraz gider, kendi farklı yolunu bulur.",
+    "ders": "Farklı bakmak bir güçtür — bazen en güzel yol, herkesin gittiği yol değildir."
+  },
+  "biliselBag": {
+    "oncekiDers": "L0-D3",
+    "kopru": "Dün kale hep dosdoğru gidiyordu; bugün fil tam tersine, hep çapraz gitti. İkisi birbirinin farklı yolu.",
+    "sonrakiTohum": "Kale düz, fil çapraz gidiyordu; yarın hiçbirine benzemeyen, zıplayan yaramaz atı keşfedeceğiz!"
+  },
+  "moladavet": "Piyoncuk çapraz koşmaktan biraz yoruldu, soluklanmak istiyor. Burada mola verip yarın devam edelim mi, yoksa bir durak daha? İkisi de çok güzel!",
+  "ustalikOlcumu": {
+    "soru": "Fil nasıl gider?",
+    "secenekler": ["Hep dosdoğru", "Hep çapraz", "Zıplayarak"],
+    "dogruIndex": 1,
+    "yasBecerisiEtiketi": "Farklı Bakış"
+  }
+}

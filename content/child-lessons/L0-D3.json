@@ -1,0 +1,123 @@
+{
+  "id": "L0-D3",
+  "blok": 1,
+  "dersNo": 3,
+  "baslik": "Dosdoğru Giden Dev: Kale",
+  "yasBecerisi": "Dürüstlük",
+  "hedefDakika": 45,
+  "duraklar": [
+    {
+      "no": 1,
+      "baslik": "Tekrar Selam! Bugün Koca Bir Dost",
+      "kesif": "Selaaam, döndün! Dün cesur piyonumuzu tanımıştık, hep ileri giden. Bugün koca bir dostla tanışıyoruz: kale! Köşede duran, güçlü bir kule gibi. Hadi önce evini bulalım.",
+      "piyoncuk": "Kale benim en uzun boylu arkadaşım! Onu çok seveceksin, hep dosdoğru gider.",
+      "gorev": {
+        "tur": "isik-yak",
+        "yonerge": "Kalenin evi köşededir. En sol alt köşedeki 'a1' odasına dokun bakalım.",
+        "hedefKare": "a1",
+        "kesifIpuclari": [
+          "En sol kapı a, en alt kat 1. İkisini birleştir: köşe oda!",
+          "Sola kadar git, en aşağıya in: işte kalenin evi."
+        ],
+        "kutlama": "İşte orada duruyor! Koca kaleyi buldun."
+      }
+    },
+    {
+      "no": 2,
+      "baslik": "Kale Hep Dosdoğru Gider",
+      "kesif": "Kalenin bir huyu var: asla eğri büğrü gitmez, hep dümdüz! Yukarı, aşağı, sağa, sola... ama hep düz bir çizgide. Tıpkı doğru sözlü olmak gibi. Hadi yukarı gönderelim.",
+      "gorev": {
+        "tur": "hamle",
+        "yonerge": "Kaleyi dümdüz yukarı, a5 odasına gönder. Önce kaleye, sonra a5'e dokun.",
+        "fen": "4k3/8/8/8/8/8/8/R3K3 w - - 0 1",
+        "dogruHamleSan": "Ra5",
+        "kabulEdilen": ["Ra8"],
+        "kesifIpuclari": [
+          "Kale yukarı gidebilir. a sütununda yukarı çıkmayı dene.",
+          "a1'den yukarı say: a2, a3, a4, a5! İşte oraya."
+        ],
+        "kutlama": "Vaaay, nasıl da düz gitti! Kale hiç şaşmadı, dümdüz."
+      }
+    },
+    {
+      "no": 3,
+      "baslik": "Yana da Gidebilir",
+      "kesif": "Kale sadece yukarı aşağı değil, sağa sola da dosdoğru gider. Ama hep düz, asla çapraz değil! Hadi bu sefer yana kaydıralım.",
+      "gorev": {
+        "tur": "hamle",
+        "yonerge": "Kaleyi yana doğru d1 odasına kaydır.",
+        "fen": "4k3/8/8/8/8/8/8/R3K3 w - - 0 1",
+        "dogruHamleSan": "Rd1",
+        "kabulEdilen": ["Rc1", "Rb1"],
+        "kesifIpuclari": [
+          "Kale yana da düz gider. Sağa doğru kaymayı dene.",
+          "a1'den sağa say: b1, c1, d1! İşte oraya."
+        ],
+        "kutlama": "Süper! Gördün mü, yana da dümdüz gitti."
+      }
+    },
+    {
+      "no": 4,
+      "baslik": "Piyoncuk'a Anlatıyoruz",
+      "kesif": "Piyoncuk kalenin çapraz da gidebileceğini sanıyor. Ama sen biliyorsun ki kale sadece dosdoğru gider. Hadi ona göster!",
+      "piyoncuk": "Kale çapraz da gidebiliyor mu yoksa? Ben karıştırdım... bana dosdoğru gittiğini gösterir misin?",
+      "gorev": {
+        "tur": "rol-degistir",
+        "yonerge": "Piyoncuk'a kalenin düz gittiğini göster: kaleyi a1'den dümdüz yukarı, ta a8 odasına kadar gönder.",
+        "fen": "4k3/8/8/8/8/8/8/R3K3 w - - 0 1",
+        "dogruHamleSan": "Ra8",
+        "kesifIpuclari": [
+          "Sen biliyorsun: kale hep düz. a sütununda en yukarıya çık.",
+          "a1'den ta yukarıya, a8'e kadar dosdoğru."
+        ],
+        "kutlama": "Piyoncuk öğrendi! 'Demek hep dosdoğru, tıpkı senin gibi dürüst!' diyor."
+      }
+    },
+    {
+      "no": 5,
+      "baslik": "Kâşif Gözü",
+      "kesif": "Artık kalenin nasıl gittiğini biliyorsun. Hadi bir tahmin oyunu: kale bir köşeden düz giderse nereye varır dersin?",
+      "gorev": {
+        "tur": "tahmin",
+        "yonerge": "Kale h1 köşesinde olsa ve dümdüz yukarı gitse, en tepede hangi odaya varır? Önce tahmin et, sonra dokun.",
+        "hedefKare": "h8",
+        "kesifIpuclari": [
+          "h sütununda en yukarı kat kaçıncıydı? 8!",
+          "Sağ köşeden yukarı git: h8!"
+        ],
+        "kutlama": "h8! Tam köşe. Gözlerin gerçekten keskinmiş."
+      }
+    },
+    {
+      "no": 6,
+      "baslik": "Dosdoğru Bir Gün",
+      "kesif": "Bugün kaleyi tanıdık: hep dosdoğru giden, hiç şaşmayan güçlü bir dost. Sen de bugün dürüstlüğü öğrendin — tıpkı bir şeyi kırınca dosdoğru söylemek gibi, kale gibi dümdüz.",
+      "piyoncuk": "Bugün çok gurur duydum seninle! Yarın çapraz giden şık bir dostu, fili tanıyacağız!",
+      "gorev": {
+        "tur": "secim",
+        "yonerge": "Piyoncuk soruyor: yarın fili tanırken önce sağ tarafı mı yoksa sol tarafı mı keşfedelim? Sen seç!",
+        "kesifIpuclari": [
+          "Hangisini seçersen yarın oradan başlarız. Karar senin, kâhraman!"
+        ],
+        "kutlama": "Harika seçim! Piyoncuk not aldı bile."
+      }
+    }
+  ],
+  "vakaDosyasi": {
+    "gunlukHayat": "Yanlışlıkla bir bardağı kırınca, saklamak yerine annene dosdoğru söylersin.",
+    "satrancBaglantisi": "Kale de asla eğrilmez, hep dosdoğru gider.",
+    "ders": "Dürüstlük, kale gibi dümdüz olmaktır — en kolay ve en güzel yol."
+  },
+  "biliselBag": {
+    "oncekiDers": "L0-D2",
+    "kopru": "Dün piyonun hep ileri gittiğini öğrendik; bugün kalenin dört yöne ama hep dosdoğru gittiğini gördük.",
+    "sonrakiTohum": "Kale hep düz gidiyordu; yarın hep çapraz giden şık bir dostu, fili keşfedeceğiz!"
+  },
+  "moladavet": "Piyoncuk biraz uzandı, bacakları yoruldu. İstersen burada mola verip yarın devam ederiz, istersen bir durak daha — ikisi de çok güzel!",
+  "ustalikOlcumu": {
+    "soru": "Kale nasıl gider?",
+    "secenekler": ["Hep çapraz", "Hep dosdoğru (düz)", "Zıplayarak"],
+    "dogruIndex": 1,
+    "yasBecerisiEtiketi": "Dürüstlük"
+  }
+}
