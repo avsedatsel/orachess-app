@@ -7,6 +7,7 @@ import { AnalysisPanel } from "@/components/chess/AnalysisPanel";
 import { ActionPanel } from "@/components/game/ActionPanel";
 import { BadgeReward } from "@/components/game/BadgeReward";
 import { PerformanceFeedback } from "@/components/game/PerformanceFeedback";
+import { SmartRouter } from "@/components/game/SmartRouter";
 import { useStockfish, type StockfishEval } from "@/hooks/useStockfish";
 import { useUserLevel } from "@/hooks/useUserLevel";
 import { useSkillMastery } from "@/hooks/useSkillMastery";
@@ -41,7 +42,7 @@ export default function GamePage() {
   const [mentorInput, setMentorInput] = useState<MentorInput | null>(null);
   const { ready, analyzing, evaluation, analyzedFen, analyze } = useStockfish();
   const userLevel = useUserLevel(); // kullanıcının tespit edilen seviyesi (yoksa 0)
-  const { lastMetrics, recordMove } = useSkillMastery();
+  const { mastery, lastMetrics, recordMove } = useSkillMastery();
 
   // Etkileşim durumları
   const [askSignal, setAskSignal] = useState(0);
@@ -192,6 +193,12 @@ export default function GamePage() {
 
           {/* SÜTUN 3 — Aksiyon */}
           <div className="order-3 w-full lg:flex-1 lg:min-w-0 space-y-4">
+            {/* Akıllı Yönlendirme (Smart-Router): derse başlarken pedagojik yön */}
+            <SmartRouter
+              currentElo={levelToElo(userLevel)}
+              lifeStrategyScore={mastery.lifeStrategyScore}
+            />
+
             {/* Hamle sonrası bilişsel geri bildirim */}
             <PerformanceFeedback metrics={lastMetrics} />
 
