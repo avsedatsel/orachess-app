@@ -1,0 +1,123 @@
+{
+  "id": "L0-D2",
+  "blok": 1,
+  "dersNo": 2,
+  "baslik": "İlk Dostumuz: Cesur Piyon",
+  "yasBecerisi": "Kararlılık",
+  "hedefDakika": 45,
+  "duraklar": [
+    {
+      "no": 1,
+      "baslik": "Tekrar Selam! Piyoncuk Seni Bekledi",
+      "kesif": "Selaaam, döndün! Piyoncuk sabahtan beri seni bekliyordu. Dün odaların adreslerini öğrenmiştik, hatırlıyor musun? Bugün o odalarda yaşayan ilk dostumuzla tanışıyoruz: cesur piyon!",
+      "piyoncuk": "Sonunda geldin! Bugün benim akrabalarımı tanıtacağım sana, hepsi çok cesur!",
+      "gorev": {
+        "tur": "isik-yak",
+        "yonerge": "Dün öğrendiğin bir odayı bana gösterir misin? Mesela 'e2' odasına dokun — orada bir piyon uyuyor.",
+        "hedefKare": "e2",
+        "kesifIpuclari": [
+          "e kapısı ortadaki kapı, 2. kat en alta yakın. Birlikte bulalım.",
+          "Alttaki beyaz askerlerden ortadakinin evi orası."
+        ],
+        "kutlama": "İşte orada! Dünden hatırladın, aferin sana — hafızan çok kuvvetli!"
+      }
+    },
+    {
+      "no": 2,
+      "baslik": "Piyon Nasıl Yürür?",
+      "kesif": "Piyon çok kararlı bir dosttur: hep ileri gider, asla geri dönmez. Genelde bir oda ilerler, ama evinden ilk çıkışında istersen iki oda birden gidebilir. Hadi görelim!",
+      "gorev": {
+        "tur": "hamle",
+        "yonerge": "e2'deki piyonu bir oda ileri, e3'e yürüt. Önce ona, sonra e3 odasına dokun.",
+        "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+        "dogruHamleSan": "e3",
+        "kabulEdilen": ["e4"],
+        "kesifIpuclari": [
+          "Piyon ileri gider. Bir oda ilerisi neresi olur sence?",
+          "e2'nin bir üstü e3. Hadi oraya yürüyelim."
+        ],
+        "kutlama": "Bak nasıl da kararlı ilerledi! Piyon asla geri dönmez, tıpkı verdiğin sözü tutman gibi."
+      }
+    },
+    {
+      "no": 3,
+      "baslik": "İki Oda Birden!",
+      "kesif": "Piyonun küçük bir sırrı var: evinden ilk çıkışında, istersen iki oda birden zıplayabilir. Ama sadece ilk seferinde! Hadi başka bir piyonla deneyelim.",
+      "gorev": {
+        "tur": "hamle",
+        "yonerge": "d2'deki piyonu iki oda ileri, d4'e sür.",
+        "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+        "dogruHamleSan": "d4",
+        "kabulEdilen": ["c4", "e4"],
+        "kesifIpuclari": [
+          "d kapısındaki asker de evinde, yani iki oda gidebilir.",
+          "d2'den say: bir oda d3, iki oda d4!"
+        ],
+        "kutlama": "Vaaay, iki oda birden! Piyoncuk zıplamana bayıldı."
+      }
+    },
+    {
+      "no": 4,
+      "baslik": "Piyoncuk'a Anlatalım",
+      "kesif": "Piyoncuk piyonun kaç oda gidebileceğini karıştırdı. Sen çok iyi anladın, hadi ona sen anlat.",
+      "piyoncuk": "Ben karıştırdım... piyon her zaman mı iki oda gidiyor, yoksa sadece ilk seferinde mi? Bana anlatır mısın?",
+      "gorev": {
+        "tur": "rol-degistir",
+        "yonerge": "Piyoncuk'a doğru cevabı seç: piyon iki oda sadece 'ilk hamlesinde' mi gidebilir? Evet dersen d2 piyonunu iki oda ileri sürerek göster.",
+        "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+        "dogruHamleSan": "d4",
+        "kesifIpuclari": [
+          "Sen biliyorsun: iki oda sadece ilk seferde. Piyoncuk'a göstererek anlat.",
+          "d2 evinden ilk çıkış, o yüzden iki oda gidebilir: d4."
+        ],
+        "kutlama": "Piyoncuk çözdü! 'Şimdi anladım, sen süper bir öğretmensin!' diyor."
+      }
+    },
+    {
+      "no": 5,
+      "baslik": "Cesaret Yarışı",
+      "kesif": "Piyonlar cesurdur ama akıllıca cesur olmak lazım. Bir piyonu ileri sürerken, çok acele etmeden düşünmek en iyisi. Hadi sen seç!",
+      "gorev": {
+        "tur": "tahmin",
+        "yonerge": "Sence en soldaki piyon (a2'deki) bir oda ilerlerse hangi odaya gider? Önce tahmin et, sonra oraya dokun.",
+        "hedefKare": "a3",
+        "kesifIpuclari": [
+          "a kapısı en soldaki. Bir oda yukarısı neresi olur?",
+          "a2'nin bir üstü: a3!"
+        ],
+        "kutlama": "a3! Doğru tahmin. Artık piyonların nasıl yürüdüğünü çözdün."
+      }
+    },
+    {
+      "no": 6,
+      "baslik": "Bugünlük Bu Kadar — Cesur Bir Gün",
+      "kesif": "Bugün ilk dostumuz piyonu tanıdık: hep ileri giden, asla geri dönmeyen, kararlı bir asker. Sen de bugün kararlılığı öğrendin — bir şeye başlayınca sonuna kadar götürmeyi.",
+      "piyoncuk": "Bugün akrabalarımı tanıttığım için çok mutluyum! Yarın çok özel bir dostu, koskoca kaleyi tanıyacağız!",
+      "gorev": {
+        "tur": "secim",
+        "yonerge": "Piyoncuk soruyor: yarın kaleyi mi, yoksa zıplayan atı mı önce tanıyalım? Sen seç!",
+        "kesifIpuclari": [
+          "Hangisini seçersen, yarın onunla başlıyoruz. Karar senin, kâhraman!"
+        ],
+        "kutlama": "Harika seçim! Piyoncuk çoktan heyecanlandı bile."
+      }
+    }
+  ],
+  "vakaDosyasi": {
+    "gunlukHayat": "Bir oyuna başlayınca, zorlaşsa bile küsüp bırakmaz, sonuna kadar oynarsın.",
+    "satrancBaglantisi": "Piyon da asla geri dönmez; hep ileri, hep kararlı gider.",
+    "ders": "Kararlılık, başladığın işi cesaretle sürdürmektir — tıpkı cesur piyon gibi."
+  },
+  "biliselBag": {
+    "oncekiDers": "L0-D1",
+    "kopru": "Dün odaların adreslerini öğrendik; o adresler olmadan bugün piyonun nereye gittiğini konuşamazdık.",
+    "sonrakiTohum": "Piyonu tanıdık; yarın düz giden güçlü bir dostu, kaleyi keşfedeceğiz!"
+  },
+  "moladavet": "Piyoncuk biraz koşuşturdu, soluklanmak istiyor. İstersen burada mola verip yarın devam ederiz, istersen bir durak daha — ikisi de çok güzel!",
+  "ustalikOlcumu": {
+    "soru": "Piyon evinden ilk çıkışında kaç oda gidebilir?",
+    "secenekler": ["Her zaman üç oda", "İlk hamlesinde bir veya iki oda", "Geri de gidebilir"],
+    "dogruIndex": 1,
+    "yasBecerisiEtiketi": "Kararlılık"
+  }
+}
