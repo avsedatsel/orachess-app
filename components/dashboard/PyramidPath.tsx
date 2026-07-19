@@ -241,11 +241,11 @@ export function PyramidPath({ detectedLevel }: { detectedLevel?: number | null }
                               )}
                             </button>
                             <Link
-                              href="/game"
+                              href={`/ders/${lesson.id}`}
                               className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold bg-ora-gold text-ora-dark rounded-lg hover:opacity-90 transition"
                             >
                               <Play className="w-3.5 h-3.5" />
-                              Alıştırmaya git
+                              Derse Başla
                             </Link>
                             <button
                               onClick={() => toggle(lesson.id)}
