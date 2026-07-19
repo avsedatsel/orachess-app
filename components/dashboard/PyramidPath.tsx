@@ -19,6 +19,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { LEVEL_DEFINITIONS } from "@/lib/chess-utils";
+import { getBlockForLevel, FOCUS_META } from "@/lib/curriculum-engine";
 import { getLevelLessons, type Lesson } from "@/lib/lessons-data";
 import { synthesizeSpeech } from "@/lib/ai/voice-api";
 import { useUserLevel } from "@/hooks/useUserLevel";
@@ -76,6 +77,8 @@ export function PyramidPath({ detectedLevel }: { detectedLevel?: number | null }
           // Piramit hissi: üst seviyeler biraz daha dar.
           const width = 100 - (11 - level.level) * 3.2;
           const doneInLevel = lessons.filter((l) => completed.has(l.id)).length;
+          const block = getBlockForLevel(level.level);
+          const focusMeta = FOCUS_META[block.focus];
 
           return (
             <div
@@ -117,6 +120,16 @@ export function PyramidPath({ detectedLevel }: { detectedLevel?: number | null }
                   <p className="text-xs text-gray-400 truncate">
                     {level.eloMin}-{level.eloMax} Elo · {level.description}
                   </p>
+                  {/* Müfredat fokusu (pedagojik matris) */}
+                  <span
+                    className="inline-flex items-center gap-1 mt-1 text-[10px] font-semibold px-1.5 py-0.5 rounded-full"
+                    style={{
+                      backgroundColor: `${focusMeta.color}22`,
+                      color: focusMeta.color,
+                    }}
+                  >
+                    {focusMeta.emoji} {focusMeta.label}
+                  </span>
                 </div>
                 {lessons.length > 0 && (
                   <span className="text-[10px] text-gray-400 shrink-0 hidden sm:block">
@@ -133,6 +146,19 @@ export function PyramidPath({ detectedLevel }: { detectedLevel?: number | null }
               {/* 30'lu adım bloğu */}
               {acik && (
                 <div className="mt-2 mb-1 p-3 sm:p-4 rounded-xl bg-ora-dark/40 border border-gray-800">
+                  {/* Bu bloğun pedagojik kazanımı */}
+                  <div className="mb-3 flex items-center gap-2 text-xs">
+                    <span style={{ color: focusMeta.color }}>
+                      {focusMeta.emoji}
+                    </span>
+                    <span className="text-gray-300">
+                      Kazanım:{" "}
+                      <span className="font-semibold text-gray-100">
+                        {block.expectedPsychologicalOutcome}
+                      </span>
+                    </span>
+                  </div>
+
                   {lessons.length === 0 && (
                     <p className="text-xs text-gray-400 text-center py-2">
                       Bu seviyenin dersleri yakında Doğa Hoca tarafından
