@@ -1,0 +1,120 @@
+{
+  "id": "L0-D1",
+  "blok": 1,
+  "dersNo": 1,
+  "baslik": "Sihirli Tahta ve 64 Oda",
+  "yasBecerisi": "Odaklanma",
+  "hedefDakika": 45,
+  "duraklar": [
+    {
+      "no": 1,
+      "baslik": "Selam! Kendi Kalemizi Kuruyoruz",
+      "kesif": "Selaaam! Bugün seninle çok özel bir şeye başlıyoruz: kendi kalemizi kuruyoruz! Bak şu tahtaya... aslında o bir tahta değil, 64 odalı sihirli bir apartman. Hazır mısın, yoksa önce biraz sohbet mi edelim?",
+      "piyoncuk": "Ben Piyoncuk! Bu apartmanda seninle birlikte yaşayacağım. Beni tanımana çok sevindim!",
+      "gorev": {
+        "tur": "isik-yak",
+        "yonerge": "Hadi ilk ışığı birlikte yakalım! Ekranda gördüğün herhangi bir odaya (kareye) parmağınla dokun, ışığı yansın.",
+        "hedefKare": "e4",
+        "kesifIpuclari": [
+          "Merak etme, burada dokunabileceğin 64 oda var, hepsi senin.",
+          "Ortalardaki bir odaya dokunmayı dene, oralar en aydınlık odalar."
+        ],
+        "kutlama": "Vaaay, ışık yandı! İşte bu, artık bu apartman senin!"
+      }
+    },
+    {
+      "no": 2,
+      "baslik": "Katlar ve Kapılar",
+      "kesif": "Bu apartmanın katları var: en alt kat 1. sıra, en üst kat 8. sıra. Bir de dikey giriş kapıları var: a kapısından h kapısına kadar. Yani her odanın bir adresi var, tıpkı senin evin gibi!",
+      "gorev": {
+        "tur": "isik-yak",
+        "yonerge": "Bakalım 'd4' odasını bulabilecek misin? d kapısından gir, 4. kata çık, o odaya dokun.",
+        "hedefKare": "d4",
+        "kesifIpuclari": [
+          "d kapısı, soldan dördüncü kapı. Acele yok, birlikte sayalım.",
+          "Buldun kapıyı, şimdi 4. kata çık: 1, 2, 3, 4!"
+        ],
+        "kutlama": "İşte oradasın! d4 odasını buldun, tam bir kâşifsin!"
+      }
+    },
+    {
+      "no": 3,
+      "baslik": "En Kıymetli Odalar: Merkez",
+      "kesif": "Apartmanın tam ortasındaki dört oda var ya... onlar en kıymetlileri. Çünkü ortadan her yere daha kolay gidilir. Şimdi oraya ilk askerimizi gönderelim mi?",
+      "gorev": {
+        "tur": "hamle",
+        "yonerge": "Alttaki beyaz askerlerden ortadakini (e2 odasındakini) iki oda ileri, e4'e sür. Önce ona dokun, sonra e4 odasına dokun.",
+        "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+        "dogruHamleSan": "e4",
+        "kabulEdilen": ["d4"],
+        "kesifIpuclari": [
+          "Ortadaki asker, e kapısındaki asker. Sence iki oda ileri gidebilir mi?",
+          "İlk hamlesinde bir asker iki oda birden gidebilir. Hadi e4'e gönderelim."
+        ],
+        "kutlama": "Muhteşem! Askerin merkeze yerleşti. Bak Piyoncuk bile heyecanlandı!"
+      }
+    },
+    {
+      "no": 4,
+      "baslik": "Piyoncuk'a Öğretiyoruz",
+      "kesif": "Piyoncuk merkezi çok merak etti ama tam anlamadı. Hani sen az önce d4 odasını bulmuştun ya? Piyoncuk onu bir türlü bulamıyor.",
+      "piyoncuk": "Ben d4'ü bulamadım ki... bana gösterir misin? Sen çok iyi buluyorsun!",
+      "gorev": {
+        "tur": "rol-degistir",
+        "yonerge": "Şimdi sen öğretmen ol! Piyoncuk'a d4 odasını göster: o odaya dokun ki Piyoncuk da öğrensin.",
+        "hedefKare": "d4",
+        "kesifIpuclari": [
+          "Sen biliyorsun bunu! d kapısı, 4. kat. Piyoncuk sana güveniyor.",
+          "Birlikte bulalım: d kapısından gir, dört kat çık."
+        ],
+        "kutlama": "Piyoncuk öğrendi! 'Teşekkürler, sen harika bir öğretmensin!' diyor."
+      }
+    },
+    {
+      "no": 5,
+      "baslik": "Köşe Odaların Sırrı",
+      "kesif": "Apartmanın dört köşesinde özel odalar var. En sevdiğim köşe a1... hani en soldaki, en alttaki oda. Oralarda ileride güçlü dostlarımız yaşayacak.",
+      "gorev": {
+        "tur": "tahmin",
+        "yonerge": "Sence en sağ üst köşedeki oda hangisi olabilir? Önce parmağınla tahmin et, sonra birlikte bakalım!",
+        "hedefKare": "h8",
+        "kesifIpuclari": [
+          "En sağdaki kapı h, en üst kat 8. İkisini birleştirince?",
+          "Sağa kadar git, yukarı kadar çık: işte köşe oda!"
+        ],
+        "kutlama": "h8! Tam köşeyi buldun. Gözlerin çok keskinmiş senin!"
+      }
+    },
+    {
+      "no": 6,
+      "baslik": "Bugünlük Bu Kadar — Yarına Tohum",
+      "kesif": "Bugün kendi apartmanımızı tanıdık, odaların adreslerini öğrendik ve merkezin ne kadar kıymetli olduğunu keşfettik. Sen bugün odaklanmayı da öğrendin — tıpkı markette sıranı sabırla beklemek gibi, her odaya tek tek, sakince baktın.",
+      "piyoncuk": "Bugün çok eğlendim! Yarın ilk askerimizle, yani benim gibi cesur piyonlarla tanışacağız. Çok heyecanlıyım!",
+      "gorev": {
+        "tur": "secim",
+        "yonerge": "Bugünün kâhramanı sensin! Piyoncuk sana sormak istiyor: yarın önce hangi odayı keşfedelim — merkez mi, köşe mi?",
+        "kesifIpuclari": [
+          "Hangisini seçersen seç, yarın oradan başlayacağız. Karar senin!"
+        ],
+        "kutlama": "Harika seçim! Piyoncuk not aldı, yarın oradan başlıyoruz."
+      }
+    }
+  ],
+  "vakaDosyasi": {
+    "gunlukHayat": "Markette annenle sıra beklerken sabırla, sakince beklersin.",
+    "satrancBaglantisi": "Tahtada da her odaya tek tek, acele etmeden bakmak aynı sabırdır.",
+    "ders": "Sabırla ve odaklanınca, hem markette hem tahtada her şey daha kolay."
+  },
+  "biliselBag": {
+    "oncekiDers": null,
+    "kopru": "Bu bizim ilk günümüz; birlikte kendi kalemizin zeminini kuruyoruz.",
+    "sonrakiTohum": "Odaları tanıdık; yarın bu odalarda yaşayan ilk cesur dostumuzla, piyonla tanışacağız!"
+  },
+  "moladavet": "Piyoncuk biraz acıktı galiba, elmasını yemek istiyor. Burada mola verip yarın devam edelim mi, yoksa bir durak daha keşfe çıkalım mı? İkisi de çok güzel!",
+  "ustalikOlcumu": {
+    "soru": "Apartmanımızın en kıymetli odaları neredeydi?",
+    "secenekler": ["En üst katta", "Tam ortada (merkezde)", "Sadece köşelerde"],
+    "dogruIndex": 1,
+    "yasBecerisiEtiketi": "Odaklanma"
+  }
+}
