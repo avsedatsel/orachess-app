@@ -42,6 +42,9 @@ export interface SkillMastery {
   // Çizelge için ek birikimli alanlar:
   chessKnowledge: number; // 0-100 teknik doğruluk ortalaması ("Satranç Bilgisi")
   movesPlayed: number; // ortalama hesabı için hamle sayısı
+  // Kriz Yönetimi (Kod Bloğu 7):
+  crisisManagementScore: number; // 0-100 baskı altında soğukkanlılık
+  crisesFaced: number; // kaç kez kriz pozisyonuyla karşılaşıldı
 }
 
 export const INITIAL_MASTERY: SkillMastery = {
@@ -50,6 +53,8 @@ export const INITIAL_MASTERY: SkillMastery = {
   recentMistakes: [],
   chessKnowledge: 50,
   movesPlayed: 0,
+  crisisManagementScore: 100,
+  crisesFaced: 0,
 };
 
 const MAX_MISTAKES = 5;
@@ -63,7 +68,7 @@ const MAX_MISTAKES = 5;
 export function updateMastery(
   prev: SkillMastery,
   metrics: PerformanceMetrics,
-  ctx: { chessElo: number; mistakeNote?: string }
+  ctx: { chessElo: number; mistakeNote?: string; inCrisis?: boolean }
 ): SkillMastery {
   const n = prev.movesPlayed + 1;
   const chessKnowledge = Math.round(
@@ -77,11 +82,26 @@ export function updateMastery(
       ? [ctx.mistakeNote, ...prev.recentMistakes].slice(0, MAX_MISTAKES)
       : prev.recentMistakes;
 
+  // Kriz Yönetimi: yalnızca kriz pozisyonunda oynanan hamlelerde güncellenir.
+  // "Soğukkanlılık" = ya en iyi hamleyi buldu ya da acele etmeyip düşündü (panik yok).
+  let crisisManagementScore = prev.crisisManagementScore;
+  let crisesFaced = prev.crisesFaced;
+  if (ctx.inCrisis) {
+    crisesFaced = prev.crisesFaced + 1;
+    const composure =
+      metrics.technicalAccuracy === 100 || metrics.strategicInsight >= 100;
+    crisisManagementScore = Math.round(
+      prev.crisisManagementScore * 0.6 + (composure ? 100 : 30) * 0.4
+    );
+  }
+
   return {
     chessElo: ctx.chessElo || prev.chessElo,
     lifeStrategyScore,
     chessKnowledge,
     recentMistakes,
     movesPlayed: n,
+    crisisManagementScore,
+    crisesFaced,
   };
 }

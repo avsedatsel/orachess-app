@@ -57,7 +57,8 @@ export function useSkillMastery() {
       userMove: string,
       bestMove: string,
       timeTaken: number,
-      chessElo: number
+      chessElo: number,
+      inCrisis = false
     ): PerformanceMetrics => {
       const metrics = calculatePerformanceMetrics(
         userMove,
@@ -68,6 +69,7 @@ export function useSkillMastery() {
       setMastery((prev) => {
         const next = updateMastery(prev, metrics, {
           chessElo,
+          inCrisis,
           mistakeNote:
             metrics.technicalAccuracy < 100
               ? `${userMove} — daha iyisi: ${bestMove}`

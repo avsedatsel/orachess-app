@@ -8,10 +8,16 @@ import { ActionPanel } from "@/components/game/ActionPanel";
 import { BadgeReward } from "@/components/game/BadgeReward";
 import { PerformanceFeedback } from "@/components/game/PerformanceFeedback";
 import { SmartRouter } from "@/components/game/SmartRouter";
+import { CrisisRecovery } from "@/components/game/CrisisRecovery";
 import { useStockfish, type StockfishEval } from "@/hooks/useStockfish";
 import { useUserLevel } from "@/hooks/useUserLevel";
 import { useSkillMastery } from "@/hooks/useSkillMastery";
-import { STARTING_FEN, uciToSan } from "@/lib/chess-utils";
+import { STARTING_FEN, uciToSan, getTurn } from "@/lib/chess-utils";
+import {
+  triggerCrisisRecovery,
+  isCrisis,
+  type CrisisRecovery as CrisisData,
+} from "@/lib/strategic-recovery";
 import { getLevelLessons } from "@/lib/lessons-data";
 import {
   orchestrateResponse,
@@ -49,6 +55,7 @@ export default function GamePage() {
   const [asking, setAsking] = useState(false);
   const [analysisOpen, setAnalysisOpen] = useState(false);
   const [badgeOpen, setBadgeOpen] = useState(false);
+  const [crisis, setCrisis] = useState<CrisisData | null>(null);
 
   const currentFen = lastMove?.fen ?? STARTING_FEN;
 
@@ -95,7 +102,15 @@ export default function GamePage() {
     // Bilişsel geri bildirim: en iyi hamle biliniyorsa metrikleri kaydet.
     if (bestBefore) {
       const timeTaken = (Date.now() - positionShownAtRef.current) / 1000;
-      recordMove(san, bestBefore, timeTaken, levelToElo(userLevel));
+      // Kriz Yönetimi: oyuncunun ÇÖZDÜĞÜ pozisyon (movedFrom) kendi
+      // perspektifinden -2.0 altındaysa "kriz altında oynadı" say.
+      const facingCp =
+        ev && analyzedFenRef.current === movedFrom ? ev.scoreCp : null;
+      const mover = getTurn(movedFrom); // hamleyi yapan taraf
+      const facingEval =
+        facingCp != null ? (mover === "w" ? facingCp : -facingCp) / 100 : null;
+      const inCrisis = facingEval != null && facingEval < -2.0;
+      recordMove(san, bestBefore, timeTaken, levelToElo(userLevel), inCrisis);
     }
 
     setLastMove((prev) => ({
@@ -143,6 +158,15 @@ export default function GamePage() {
       stockfishEvaluation: evaluation.scoreCp ?? undefined,
       bestMove: lastMove.bestBefore ?? undefined,
     });
+
+    // Kriz Yönetimi & Stratejik Toparlanma: tahtadaki mevcut pozisyonu
+    // OYNAYACAK tarafın perspektifinden değerlendir; zorda ise sakinleştirici mod.
+    if (evaluation.scoreCp != null) {
+      const stm = getTurn(lastMove.fen);
+      const evalForSideToMove =
+        (stm === "w" ? evaluation.scoreCp : -evaluation.scoreCp) / 100;
+      setCrisis(triggerCrisisRecovery(evalForSideToMove));
+    }
   }, [lastMove, analyzing, evaluation, analyzedFen]);
 
   return (
@@ -161,7 +185,11 @@ export default function GamePage() {
             Mobilde sıralama: Tahta → Mentor → Aksiyon */}
         <div className="flex flex-col lg:flex-row gap-6 lg:items-start">
           {/* SÜTUN 1 — Mentor (kaydırılabilir) */}
-          <div className="order-2 lg:order-1 w-full lg:flex-1 lg:min-w-0 lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto bg-ora-slate/50 rounded-lg p-4 border border-gray-800">
+          <div className="order-2 lg:order-1 w-full lg:flex-1 lg:min-w-0 lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto space-y-4">
+            {/* Kriz Yönetimi: pozisyon zorlaştıysa sakinleştirici toparlanma kartı */}
+            {crisis && isCrisis(crisis) && <CrisisRecovery data={crisis} />}
+
+            <div className="bg-ora-slate/50 rounded-lg p-4 border border-gray-800">
             {mentorInput ? (
               <MentorEngine
                 userLevel={userLevel}
@@ -184,6 +212,7 @@ export default function GamePage() {
                 </p>
               </div>
             )}
+            </div>
           </div>
 
           {/* SÜTUN 2 — Tahta (merkez) */}
