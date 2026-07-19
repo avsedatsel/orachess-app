@@ -1,0 +1,121 @@
+{
+  "id": "L0-D5",
+  "blok": 1,
+  "dersNo": 5,
+  "baslik": "Zıplayan Yaramaz: At",
+  "yasBecerisi": "Problem Çözme",
+  "hedefDakika": 45,
+  "duraklar": [
+    {
+      "no": 1,
+      "baslik": "Selam! Bugün En Yaramaz Dost",
+      "kesif": "Selaaam! Dün fil çapraz gidiyordu, hatırladın mı? Bugünkü dostumuz hepsinden farklı: at! O yürümez, zıplar! Hem de engellerin üstünden atlayabilen tek dostumuz. Hadi evini bulalım.",
+      "piyoncuk": "At benim en yaramaz arkadaşım! Zıp zıp zıplar, önüne çıkan engel takılmaz ona.",
+      "gorev": {
+        "tur": "isik-yak",
+        "yonerge": "Atımız 'g1' odasında zıplamaya hazır bekliyor. Oraya dokun bakalım.",
+        "hedefKare": "g1",
+        "kesifIpuclari": [
+          "g kapısı sağdan ikinci kapı, 1. kat en alt. Birlikte bulalım.",
+          "Neredeyse köşeye kadar sağa git, en aşağıda: g1!"
+        ],
+        "kutlama": "İşte orada zıplamaya hazır! Yaramaz atımızı buldun."
+      }
+    },
+    {
+      "no": 2,
+      "baslik": "At 'L' Gibi Zıplar",
+      "kesif": "Atın çok komik bir zıplayışı var: iki oda ileri, bir oda yana. Yani havada bir 'L' harfi çizer! Hiç düz ya da çapraz değil, bambaşka. Hadi zıplatalım.",
+      "gorev": {
+        "tur": "hamle",
+        "yonerge": "Atı f3 odasına zıplat. Önce ata, sonra f3'e dokun.",
+        "fen": "4k3/8/8/8/8/8/8/4K1N1 w - - 0 1",
+        "dogruHamleSan": "Nf3",
+        "kabulEdilen": ["Nh3", "Ne2"],
+        "kesifIpuclari": [
+          "At iki ileri bir yana zıplar, 'L' gibi. Bir yeri dene.",
+          "g1'den iki yukarı, bir sola: işte f3!"
+        ],
+        "kutlama": "Vaaay, nasıl da zıpladı! At havada 'L' çizdi."
+      }
+    },
+    {
+      "no": 3,
+      "baslik": "Atın Süper Gücü: Üstünden Atlamak",
+      "kesif": "Atın bir süper gücü var: önünde bir sürü asker olsa bile, hepsinin üstünden atlayabilir! Başka hiçbir dost bunu yapamaz. Hadi kalabalık bir tahtada deneyelim.",
+      "gorev": {
+        "tur": "hamle",
+        "yonerge": "Askerlerle dolu tahtada, sağdaki atı f3'e zıplat. Bak, önündeki askerlerin üstünden nasıl atlıyor!",
+        "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+        "dogruHamleSan": "Nf3",
+        "kabulEdilen": ["Nh3"],
+        "kesifIpuclari": [
+          "Önündeki askerler onu durduramaz, at üstlerinden atlar!",
+          "Sağdaki atı iki yukarı bir sola, f3'e zıplat."
+        ],
+        "kutlama": "İnanılmaz! Askerlerin üstünden zıpladı. İşte atın süper gücü bu!"
+      }
+    },
+    {
+      "no": 4,
+      "baslik": "Piyoncuk'a Anlatıyoruz",
+      "kesif": "Piyoncuk atın düz yürüdüğünü sanıyor. Ama sen biliyorsun ki at zıplar, hem de 'L' gibi. Hadi ona göster!",
+      "piyoncuk": "At yürüyor mu, zıplıyor mu? Ben karıştırdım... bana nasıl zıpladığını gösterir misin?",
+      "gorev": {
+        "tur": "rol-degistir",
+        "yonerge": "Piyoncuk'a atın zıpladığını göster: atı başka bir yere, h3 odasına zıplat.",
+        "fen": "4k3/8/8/8/8/8/8/4K1N1 w - - 0 1",
+        "dogruHamleSan": "Nh3",
+        "kesifIpuclari": [
+          "Sen biliyorsun: at 'L' gibi zıplar. Başka bir 'L' dene.",
+          "g1'den iki yukarı, bir sağa: h3!"
+        ],
+        "kutlama": "Piyoncuk anladı! 'Demek engel takılmıyor ona, hep bir yol buluyor!' diyor."
+      }
+    },
+    {
+      "no": 5,
+      "baslik": "Atın Renk Oyunu",
+      "kesif": "Atın tatlı bir huyu daha var: her zıplayışta odanın rengini değiştirir! Açık odadan koyuya, koyudan açığa. Hadi bunu keşfedelim.",
+      "gorev": {
+        "tur": "tahmin",
+        "yonerge": "Sence at her zıpladığında oda rengi değişir mi? 'Evet, her seferinde değişir' diyorsan Piyoncuk'a başparmak göster!",
+        "kesifIpuclari": [
+          "Zıpla ve bak: her 'L' seni farklı renk odaya götürür!"
+        ],
+        "kutlama": "Aynen öyle! At her zıplayışta renk değiştirir. Ne gözlemcisin sen."
+      }
+    },
+    {
+      "no": 6,
+      "baslik": "Engel Tanımayan Bir Gün",
+      "kesif": "Bugün atı tanıdık: zıplayan, engellerin üstünden atlayan, hep bir yol bulan yaramaz dost. Sen de bugün problem çözmeyi öğrendin — yol kapalıysa küsmek yok, at gibi başka bir yol bulmak var.",
+      "piyoncuk": "Bu bloğu birlikte bitirdik, çok gurur duyuyorum! Artık bütün dostları tanıyorsun. Yarın onları birlikte oynatmaya başlayacağız!",
+      "gorev": {
+        "tur": "secim",
+        "yonerge": "Piyoncuk soruyor: bütün dostları tanıdık! Yarın önce hangisiyle oyun kuralım — kale mi, fil mi, at mı? Sen seç!",
+        "kesifIpuclari": [
+          "Hangisini seçersen yarın onunla başlarız. Karar senin, kâhraman!"
+        ],
+        "kutlama": "Muhteşem seçim! İlk bloğu bitirdin, seninle gurur duyuyorum!"
+      }
+    }
+  ],
+  "vakaDosyasi": {
+    "gunlukHayat": "Oyuncağın dolabın arkasına düşünce ağlamazsın; bir sopa bulup başka yoldan çıkarırsın.",
+    "satrancBaglantisi": "At da önü kapalıysa durmaz, üstünden atlayıp yolunu bulur.",
+    "ders": "Problem çözmek, yol kapalıyken küsmeyip yeni bir yol aramaktır — tıpkı zıplayan at gibi."
+  },
+  "biliselBag": {
+    "oncekiDers": "L0-D4",
+    "kopru": "Dün fil çapraz gidiyordu; bugün at hiçbirine benzemedi, zıpladı ve engellerin üstünden atladı.",
+    "sonrakiTohum": "Artık tüm dostları tanıyorsun! Yarın onları birlikte oynatıp gerçek keşiflere başlıyoruz."
+  },
+  "moladavet": "Piyoncuk zıpladıkça zıpladı, biraz nefeslensin istiyor. Burada mola verip yarın devam edelim mi, yoksa bir durak daha? İkisi de çok güzel!",
+  "ustalikOlcumu": {
+    "soru": "Atın en özel gücü nedir?",
+    "secenekler": ["Çapraz gitmek", "Engellerin üstünden zıplamak", "Hep düz gitmek"],
+    "dogruIndex": 1,
+    "yasBecerisiEtiketi": "Problem Çözme"
+  }
+}
