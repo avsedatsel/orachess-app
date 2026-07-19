@@ -6,7 +6,7 @@
  * Ayrıca Sokratik analiz için tutulan son hataları listeler.
  */
 
-import { TrendingUp, Gauge, Brain, AlertCircle } from "lucide-react";
+import { TrendingUp, Gauge, Brain, AlertCircle, LifeBuoy } from "lucide-react";
 import { useSkillMastery } from "@/hooks/useSkillMastery";
 
 function Cizgi({
@@ -73,6 +73,14 @@ export function SkillMasteryChart() {
           icon={<Brain className="w-4 h-4 text-gray-400" />}
           hint="Düşünme derinliğin — sabır, planlama, kriz yönetimi"
         />
+        {mastery.crisesFaced > 0 && (
+          <Cizgi
+            label="Kriz Yönetimi"
+            value={mastery.crisisManagementScore}
+            icon={<LifeBuoy className="w-4 h-4 text-gray-400" />}
+            hint={`Baskı altında soğukkanlılık — ${mastery.crisesFaced} kriz anı yaşandı`}
+          />
+        )}
       </div>
 
       {mastery.recentMistakes.length > 0 && (
